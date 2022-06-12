@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Title</title>
+  <meta charset="utf-8">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+    @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+    @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+    body {
+      font-family: monospace;
+      line-height: 1.2;
+      font-family: 'Droid Serif';
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: monospace;
+      font-weight: normal;
+      color: #4E99C0;
+    }
+
+    li p {
+      line-height: 1.25em;
+    }
+
+    code {
+      background: #e7e8e2;
+      color: #232729;
+      border-radius: 5px;
+    }
+
+    .red {
+      color: #f25252;
+      font-weight: bold;
+    }
+
+    .large {
+      font-size: 2em;
+    }
+
+    .remark-slide-content h1 {
+      font-size: 3em;
+    }
+
+    .remark-slide-content h2 {
+      font-size: 2em;
+    }
+
+    .remark-slide-content h3 {
+      font-size: 1.6em;
+    }
+
+    .make-important {
+      color: #f25252;
+      font-weight: bold;
+    }
+
+    .footnote {
+      position: absolute;
+      bottom: 1em;
+      color: #9e9c9b;
+      font-size: .8em;
+    }
+
+    /* Two-column layout */
+    .left-column {
+      width: 49%;
+      float: left;
+    }
+
+    .right-column {
+      width: 50%;
+      float: right;
+      clear: right;
+    }
+
+    .pull-left {
+      float: left;
+      width: 47%;
+    }
+
+    .pull-right {
+      float: right;
+      width: 47%;
+    }
+
+    .pull-right~p {
+      clear: both;
+    }
+
+    .left-column-wide {
+      width: 66%;
+      float: left;
+    }
+
+    .right-column-small {
+      width: 33%;
+      float: right;
+      clear: right;
+    }
+
+    .left-column-small {
+      width: 33%;
+      float: left;
+    }
+
+    .right-column-wide {
+      width: 66%;
+      float: right;
+      clear: right;
+    }
+
+    .l-c-1 {
+      width: 10%;
+      float: left;
+    }
+
+    .r-c-9 {
+      width: 90%;
+      float: right;
+      clear: right;
+    }
+
+    .clearfix {
+      overflow: auto;
+    }
+
+    /* API reference: https://github.com/gnab/remark/blob/master/src/remark.less */
+    .remark-code,
+    .remark-inline-code {
+      font-family: 'Ubuntu Mono';
+    }
+
+    .remark-code-line-highlighted {
+      background-color: #b4b4b4;
+    }
+
+    .remark-slide-content {
+      background-color: #232729;
+      color: #eee;
+    }
+
+    .gap-10 {
+      width: 100%;
+      height: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <textarea id="source">
+
+class: center, middle
+
+# Day 01
+---
+class: center, middle
+# Welcome!
+
+---
+
+# Python Course Overview
+
+1. Review python concepts.
+
+2. Get familiar with modern programming principles.
+
+3. Apply python to CNO concepts.
+
+4. ...
+
+5. Profit
+
+---
+
+name: schedule
+# Day 1 Overview
+
+.l-c-1[
+]
+.r-c-9[
+Introductions (0800 - 0830)
+
+Course Stuff (0830 - ~1200)
+ - Project structure
+ - Package management overview (venv)
+ - VSCode Setup / demo (+ Extensions)
+ - Python Slides!
+
+Lunch / Review (1200 - 1300)
+
+Exercises (1300 - 1600)
+
+Review (1600 - 1630)
+]
+
+
+---
+
+#Around the Room*
+
+- Name?
+
+- Last assignment, location, or job?
+
+- Experience level with Python?
+
+- If you could teleport your group anywhere in the world for the day where would you go?
+
+.footnote[*virtual]
+
+---
+
+# Project Structure
+
+---
+
+# Tools
+
+- CPython (3.10) - Runtime
+
+- venv - Virtual Environments
+
+- pip - Package Management
+
+- mypy - Typing
+
+- black - Formatting
+
+- flake8 - Linting
+
+- pytest - Testing
+
+- pylance - Language Server
+
+
+---
+
+# Package Management
+
+---
+
+# Vim or Emacs?
+--
+
+A terrible question
+
+--
+
+"We show that LaTeX users were slower than Word users, wrote less text in the same amount of time, and produced more typesetting, orthographical, grammatical, and formatting errors. On most measures, expert LaTeX users performed even worse than novice Word users."*
+
+.footnote[*An Efficiency Comparison of Document Preparation Systems Used in Academic Research and Development]
+
+--
+.center[.make-important[Just use VSCode or an IDE appropriate for the task]]
+
+---
+## VSCode Demo / Extensions Install
+
+---
+
+#Capstone
+
+---
+ # So, Why Python
+
+  - Python is popular
+  - Python is expressive
+    - Huge set of third party libraries
+    - Those libraries usually already do the grunt work
+    - It's great for prototyping
+    - It's popular for automating things like testing
+
+  - Programmers are team members*
+
+  - Programmers should write code that's easy to read and maintain
+
+  - Good for exploit development
+
+  - Staticish typing / Type hinting (3.6+)
+
+.footnote[*You want to make their lives easier]
+
+---
+
+# On That
+
+“Indeed, the ratio of time spent reading versus writing is well over 10 to 1. We are constantly reading old code as part of the effort to write new code. ...[Therefore,] making it easy to read makes it easier to write.”
+
+<pre>― Robert C. Martin, Clean Code: A Handbook of Agile Software Craftsmanship</pre>
+
+???
+
+Share story about simple project being spread across 30+ files of Python what could have been 5. 50% boilerplate code similar to Java setters/getters, 10+ function calls to just append 3 blocks of bytes together
+
+---
+
+# Python 2.7 vs 3.x
+
+Yes Python 2.7 is still used where we work.  The biggest difference is how they deal with bytes and strings.
+
+.left-column[
+.center[
+Python 2.7
+
+.red[Avoid it]
+]
+]
+
+.right-column[
+.center[
+Python 3.6+
+
+Use it whenever possible
+]
+]
+---
+
+# On to Python!
+
+.center[![python_eating](resources/python_eating.jpg)]
+
+---
+#Topics reviewed
+
+* Basic data types
+
+* Strings
+
+* Lists
+
+* Sets
+
+* Dictionaries
+
+* Control Flow
+
+* Functions
+
+---
+
+## In Python, all data is an object
+
+.left-column[
+```terminal
+*>>> x = 5
+```
+]
+.right-column[
+![var_1](resources/var_1.png)
+]
+
+---
+
+## In Python, all data is an object
+
+.left-column[
+```python
+>>> x = 5
+
+*>>> hex(id(x))
+*'0x954ec0'
+```
+]
+.right-column[
+![var_2](resources/var_2.png)
+
+]
+
+---
+
+## In Python, all data is an object
+
+.left-column[
+```python
+>>> x = 5
+
+>>> hex(id(x))
+'0x954ec0'
+
+*>>> type(x)
+*<class 'int'>
+```
+]
+.right-column[
+![var_3](resources/var_3.png)
+]
+
+---
+
+## In Python, all data is an object
+
+.left-column[
+```python
+>>> x = 5
+
+>>> hex(id(x))
+'0x954ec0'
+
+>>> type(x)
+<class 'int'>
+
+*>>> dir(x)
+*['__abs__', '__add__', '__and__', 
+*'__bool__', '__ceil__', '__class__', 
+*'__delattr__', '__dir__',  
+*'__doc__', '__eq__', '__float__', 
+*...
+*'__trunc__', '__xor__', 
+*'bit_length', 'conjugate', 
+*'from_bytes', 'imag', 'numerator', 
+*'to_bytes']
+```
+]
+.right-column[
+![var_4](resources/var_4.png)
+]
+
+???
+In Python, an object is a chunk of data that contains at least the following:
+
+* A type that defines what it can do (see the next section)
+* A unique id to distinguish it from other objects
+* A value consistent with its type
+* A reference count that tracks how often this object is used
+
+Its id is like its location on the shelf, a unique identifier. Its type is like a factory stamp on the box, saying what it can do. If a Python object is an integer, it has the type int, and could (among other things, which you’ll see in Chapter 3) be added to another int. If we picture the box as being made of clear plastic, we can see the value inside. You’ll learn the use of the reference count a few sections from now, when we talk about variables and names.
+
+---
+#Variables
+.left-column[
+```python
+a = 1
+b = 15.4
+c = [a, b]
+print(c)
+a = 24
+print(c)
+print((a, b))
+```
+]
+
+.right-column[
+.center[Python 3.x]
+Possible Basic Types
+ - Boolean -        bool
+ - Integer -        int
+ - Floating Point - float
+ - Complex -        complex
+ - Text string -    str
+ - List -           list
+ - Tuple -          tuple
+ - Bytes -          bytes
+ - ByteArray -      bytearray
+ - Set -            set
+ - FrozenSet -      frozenset
+ - Dictionary -     dict
+]
+
+---
+#Type Examples
+.left-column[
+```python
+
+
+
+a = [True, 
+     1, 
+     3.14, 
+     5 + 9j, 
+     "alas", 
+     'alas', 
+     '''attack''', 
+     ["item 1", 2],
+     (2, 4, 8),
+      b'ab\xff',
+     bytearray(b'ab\xff'),
+     set([3, 5, 7]),
+     frozenset(['Elsa', 'Otto']),
+     {'game': 'bingo', 'dog': 'dingo'}
+    ]
+```
+]
+
+.right-column[
+```python
+>>> for z in [(x, type(x)) for x in a]:
+...     print(f"{z[0]}\t{z[1]}")
+
+True    <class 'bool'>
+1       <class 'int'>
+3.14    <class 'float'>
+(5+9j)  <class 'complex'>
+alas    <class 'str'>
+alas    <class 'str'>
+attack  <class 'str'>
+['item 1', 2]   <class 'list'>
+(2, 4, 8)       <class 'tuple'>
+b'ab\xff'       <class 'bytes'>
+bytearray(b'ab\xff')    <class 'bytearray'>
+{3, 5, 7}       <class 'set'>
+frozenset({'Elsa', 'Otto'})     <class 'frozenset'>
+{'game': 'bingo', 'dog': 'dingo'}       <class 'dict'>
+```
+]
+---
+# Binary / Hex / Octal
+.left-column[
+```terminal
+>>> x = 0x10
+>>> print(x)
+16
+>>> print(hex(x))
+0x10
+>>> x = 0b1000
+>>> print(x)
+8
+>>> print(bin(x))
+0b1000
+>>> x = 0o1000
+>>> print(x)
+512
+>>> print(oct(x))
+0o1000
+```
+]
+.right-column[
+* Hex
+  * Literal values start with 0x
+  * Convert from other numbers using `hex()`
+* Binary
+  * Literal values start with 0b
+  * Convert from other numbers using `bin()`
+* Octal
+  * Literal values start with 0o
+  * Convert from other numbers using `oct()`
+* `int` Conversion
+  * You can specify a base to `int(num, base)`
+  * `hex_val = int(100, 16)` 
+]
+
+---
+# Type Conversion
+.left-column[
+```terminal
+>>> int_x = 15
+>>> print(float(int_x))
+15.0
+>>> print(int(float(int_x)))
+15
+>>> print(int_x + 15.5)
+30.5
+>>> print(int(int_x + 15.5))
+30
+>>> print(str(int_x))
+15
+>>> print(str(float(int_x)))
+15.0
+>>> print(int('15.5'))
+ValueError: invalid literal for int() with base 10: '15.5'
+>>> print(int('15'))
+15
+```
+]
+.right-column[
+
+]
+---
+# Strings / Bytes
+.center[.make-important[Is it a string, unicode, bytes, ascii, utf-8?]]
+
+```terminal
+>>> x = "hello world"
+>>> print(type(x))
+<class 'str'>
+>>> print(x)
+hello world
+>>> x = x.encode()
+>>> print(type(x))
+<class 'bytes'>
+>>> print(x)
+b'hello world'
+>>> x += b" from byte land"
+>>> print(x)
+b'hello world from byte land'
+>>> x = x.decode()
+>>> print(x)
+hello world from byte land
+>>> x += b" lets add some more bytes" 
+TypeError: can only concatenate str (not "bytes") to str
+```
+???
+
+Strings are a sequence of characters. Strings in Python are immutable. You can’t change a string in place, but you can copy parts of strings to another string to get the same effect.
+
+Python 3 strings are Unicode character sequences, not byte arrays. This is, by far, the single largest language change from Python 2.
+
+UTF-8 is the standard text encoding in Python, Linux, and HTML
+
+---
+# Mutability
+
+.left-column[
+```terminal
+>>> int_list = [1,2,3,4]
+>>> initial_id = id(int_list)
+>>> print(initial_id)
+140031971434048
+
+>>> int_list.append(15)
+>>> final_id = id(int_list)
+>>> print(final_id)
+140031971434048
+
+>>> foobar = 4; print(id(foobar))
+9784992
+>>> foobar = 5; print(id(foobar))
+9785024
+
+>>> test = "test"; print(id(test))
+139705854884336
+>>> test += "a"; print(id(test))
+139705854885104
+```
+]
+.right-column[
+- Previously, modifying a variable caused the variable name to be reassigned.
+- Does that work well with lists?
+- What happens if you change one element in the list
+<br />
+- So - lists are mutable!  Sets, dictionaries too, but not integers, strings, tuples...
+<br />
+<br />
+<br />
+- Strings are immutable.
+]
+
+---
+# Sequences
+.left-column[
+```terminal
+>>> my_str = "This is a string"
+>>> int_list = [1, 2, 3, 1, 2]
+>>> int_tuple = (1, 2, 3, 4, 5)
+>>> int_set = {1, 2, 3, 4, 5}
+>>> print(my_str[0:4])
+This
+>>> print(my_str[:4])
+This
+>>> print(int_list[::2])
+[1, 3, 2]
+>>> print(int_tuple[2:])
+(3, 4, 5)
+>>> print(int_tuple[-1])
+5
+>>> print(int_set)
+{1, 2, 3, 4, 5}
+>>> print(set(int_list))
+{1, 2, 3}
+```
+]
+.right-column[
+- Common sequences: strings, lists, tuples, sets
+  - Strings can be implicitly indexed like a list
+  - Lists are a mutable collection of items
+  - Tuple is an immutable collection of items
+  - Set is a mutable collection of unique items
+
+- Slicing allows us to pull data from sequences
+  - Short syntax allows for compact code
+  - Implicit slicing for strings
+  - Slice stepping
+  - -1 is your friend, last element
+]
+---
+# Sequences Pt 2
+.left-column[
+```terminal
+>>> a = [1, 2, 3]
+>>> b = [4, 5, 6]
+>>> c = a + b
+>>> print(c)
+[1, 2, 3, 4, 5, 6]
+
+>>> d = a[:]
+>>> d.append(b)
+>>> print(d)
+[1, 2, 3, [4, 5, 6]]
+
+>>> e = a[:]
+>>> e.extend(b)
+>>> print(e)
+[1, 2, 3, 4, 5, 6]
+
+>>> e.insert(0, -100)
+>>> print(e)
+[-100, 1, 2, 3, 4, 5, 6]
+```
+]
+.right-column[
+- Lists have implemented "addition" of two or more lists
+- Append takes an object and inserts it as an element in the list
+- Extend takes a list and places the new items "inline" (The "addition" is extending the resulting list.)
+- Insert takes the position to place the object as first argument
+
+
+- What’s the difference between d = a and d = a[:]?
+  - .make-important[take a minute in your terminal to figure out and post your guess]
+]
+---
+# Dictionaries
+.left-column[
+```terminal
+>>>foo = {
+...  "a key": "a value",
+...  "key 2": 15.3,
+...  (2,1): [1,2,3,4,5]
+...}
+
+>>> print(type(foo))
+<class 'dict'>
+>>> print(foo["a key"])
+a value
+>>> print(foo[(2,1)])
+[1, 2, 3, 4, 5]
+>>> foo['lucky num'] = 13
+>>> a = 21; foo[a] = "blackjack"
+>>> print(foo[21])
+blackjack
+>>> print(foo)
+{'a key': 'a value',
+ 'key 2': 15.3,
+  (2, 1): [1, 2, 3, 4, 5],
+   'lucky num': 13, 21: 'blackjack'
+}
+```
+]
+.right-column[
+- Dictionaries allow you to map key -> value
+- Implemented as a hashmap, any hashable type can be used a key
+  - So, keys must be immutable
+- Every key needs to be unique, but values don't
+]
+---
+# Comprehensions
+.left-column[
+```terminal
+>>> [i*5 for i in range(10)]
+[0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
+>>> {i%5 for i in range(5000)}
+{0, 1, 2, 3, 4} 
+>>> (i*5 for i in range(10))
+<generator object <genexpr> at 0x7fac68f91740>
+>>> next((i*5 for i in range(10)))0
+0
+>>> next((i*5 for i in range(10)))
+0
+>>> gen = (i*5 for i in range(10))
+>>> next(gen)
+0
+>>> next(gen)
+5
+```
+]
+.right-column[
+- Comprehensions are a handy way to build a list, set, dictionary, or tuple from another iterable type
+- What did we get when we tried to build a tuple the naive way?
+  - Generators only produce the data when needed
+  - Allows us to use data sources with potentially unlimited size
+
+]
+---
+# Dictionary Comprehensions
+
+```terminal
+>>> { divisor: 
+...   [numerator for numerator in range(20) if numerator %  divisor == 0] for divisor in range(1,20)
+... }
+
+{1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 
+  2: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18], 
+  3: [0, 3, 6, 9, 12, 15, 18], 
+  4: [0, 4, 8, 12, 16], 
+...
+```
+Exercise:
+* What would the normal python look like?
+--
+
+```python
+result = defaultdict(list)
+for divisor in range(1, 20):
+  for numerator in range(20): 
+    if (numerator % divisor) == 0:
+      result[divisor].append(numerator)
+```
+
+
+```
+
+
+---
+# Control Flow 
+(if/elif/else)
+.left-column-wide[
+```terminal
+>>> bar = 10
+>>> foo = 5 if bar >= 10 else 10
+>>> if(foo == 10):
+...   print('Foo is 10')
+... elif(foo == 5):
+...   print('Foo is 5')
+... else:
+...   print('Foo != 10 and Foo != 5')
+...
+Foo is 5
+
+```
+]
+.right-column-small[
+- Parenthesis not required
+- If always evaluates
+- Elif only evaluates if a previous if / elif evaluated to False
+- Else only executes if no previous if / elif evaluated to True  
+
+]
+
+---
+# Comparison Operators
+
+Python provides some operators to evaluate to True or False
+
+.left-column[
+```python
+Greater than (>)
+Greater than or equal to (>=)
+Equal to / Equivalence (==)
+Less than (<)
+Less than or equal to (<=)
+Logical OR (or)
+Logical AND (and)
+Logical NOT (not)
+Identity (is)
+```
+]
+
+.right-column[
+```python
+>>> 5 > 10
+>>> 7 >= 7
+>>> 10 == 4
+>>> 4 < 5
+>>> 4 <= 4
+>>> 4 < 5 or 8 < 7
+>>> 4 < 5 and 8 < 7
+>>> not (4 < 5 and 8 < 7)
+>>> x = [1, 2, 3]
+>>> x is None
+```
+]
+<br />
+
+???
+
+What if the value in an evaluation isn't True or False?
+
+---
+
+# Falsey Values
+
+.left-column[
+False can be:
+* False
+* None
+* 0
+* 0.0
+* ""
+* [] / () / {} / set()
+]
+.right-column[
+```terminal
+>>> my_list = []
+>>> if my_list:
+...     print("The list is real!")
+... else:
+...     print("The list is a lie!")
+...
+The list is a lie!
+```
+]
+
+---
+# Control Flow Pro Tip
+.center[.make-important[Looking for the "right" value leads to nesting hell!]]
+
+.left-column[
+```python
+import requests
+
+urls = ["a", "b","c"]
+
+for url in urls:
+  r = requests.get(url)
+  if("available" in r.text):
+    data = r.json()
+    if("8:30" in data['appt-times']):
+      details = get_details(url)
+      if("my_doctor" in details):
+        book_appt(url)
+```
+]
+.right-column[
+```python
+import requests
+
+urls = ["a", "b","c"]
+
+for url in urls:
+  r = requests.get(url)
+  if("available" not in r.text):
+    continue
+  data = r.json()
+  if("8:30" not in data['appt-times']):
+    continue
+  details = get_details(url)
+  if("my_doctor" not in details):
+    continue
+  book_appt(url)
+```
+]
+
+???
+
+Note - When you only test for the "right" case, you will typically forget or ignore dealing with bad cases of your code.
+When the situation permits, you're cognizant of all the errors you might run into when your test for bad cases.
+
+---
+# Control Flow 
+(while)
+.left-column-wide[
+```terminal
+>>> foo_list = ["foo", "bar", "not", "foo", "bar"]
+>>> while len(foo_list) > 0:
+...   print(foo_list.pop())
+... 
+bar
+foo
+not
+bar
+foo
+```
+]
+.right-column-small[
+- `while expression`
+  - Evaluates the _expression_ and runs if true
+  - Can run forever depending on the _expression_
+  - Used when stop condition is known, but number of times it will execute is not known at the time
+]
+
+---
+# Control Flow 
+(for)
+.left-column-wide[
+```terminal
+>>> foo_list = ["foo", "bar", "not", "foo", "bar"]
+>>> for f in foo_list:
+...   print(f)
+... 
+foo
+bar
+not
+foo
+bar
+>>> for i in range(0, 4):
+...   print(i)
+... 
+0
+1
+2
+3
+```
+]
+.right-column-small[
+- `for variable in iterable`
+  - Used when dealing with a finite set of items (aka sequence)
+  - The _iterable_ must implement an _iter_ and _next_ method
+  - Possible to build your own iterable objects
+  - Builtin to strings, lists, sets, tuples, etc...
+  - Can be used with Generator functions/Objects
+]
+
+---
+
+# Control Flow 
+continue, break, pass
+.left-column-wide[
+```terminal
+>>> known_primes = []
+>>> for i in range(0, 100):
+...     if(i==0 or i==1):
+...         continue
+...     is_prime = True
+...     for prime in known_primes:
+...         if(i % prime == 0):
+...             is_prime = False
+...             break
+...     if(is_prime): #note: testing for good case
+...         known_primes.append(i)
+...     else:
+...         pass
+... 
+>>> known_primes
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 
+53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+```
+]
+.right-column-small[
+- `continue`
+  - Skips to the next iteration of the current loop
+  - For the current iteration, no additional code is executed
+- `break`
+  - Stops the loop and returns execution to the parent scope
+  - No additional loop passes are run
+- `pass`
+  - Ends the control flow for that scope
+]
+
+---
+# Control Flow 
+continue, break, pass, v2
+.left-column-wide[
+```terminal
+>>> known_primes = []
+>>> for i in range(0, 100):
+...     if(i==0 or i==1):
+...         continue
+...     is_prime = True
+...     for prime in known_primes:
+...         if(i % prime == 0):
+...             is_prime = False
+...             break
+...     if(not is_prime): #note: testing for bad cases
+...         continue
+...     known_primes.append(i)
+... 
+>>> known_primes
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 
+53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+```
+]
+.right-column-small[
+]
+
+---
+# Functions
+.left-column-wide[
+```terminal
+>>> def func_one(arg1, arg2, *args, **kwargs):
+...     print(f"arg1 was {arg1}")
+...     print(f"arg2 was {arg2}")
+...     print(f"args was {args}")
+...     print(f"kwargs was {kwargs}")
+... 
+>>> func_one(15, 22, "first", "second", 12, name="other")
+arg1 was 15
+arg2 was 22
+args was ('first', 'second', 12)
+kwargs was {'name': 'other'}
+
+>>> func_one(arg2=10, arg1=15, foo="bar")
+arg1 was 15
+arg2 was 10
+args was ()
+kwargs was {'foo': 'bar'}
+```
+]
+.right-column-small[
+- Most arguments are _positional_
+  - They get assigned in the order that they are passed
+
+- It is possible to specify arguments by name
+  - Keyword arguments
+
+- `*args` is special keyword that captures all position arguments that weren't specified as a list
+- `**kwargs` is special keyword that captures all keyword arguments that weren't specified as a dictionary
+]
+
+---
+# Functions Pt 2
+```terminal
+>>> def recipe(dry_goods, liquids, secret='Chemical X'):
+...     return {'dry_goods': dry_goods, 'liquids': liquids, 'secret': secret}
+
+>>> recipe("flour", "water")
+{'dry_goods': 'flour', 'liquids': 'water', 'secret': 'Chemical X'}
+
+>>> recipe("flour", "water", "soylent")
+{'dry_goods': 'flour', 'liquids': 'water', 'secret': 'soylent'}
+
+>>> def uhoh(arg, result=[]):
+...     result.append(arg)
+...     print(result)
+```
+
+.make-important[Defaults are calculated when function is defined, not when run]
+
+--
+
+```terminal
+>>> uhoh('a')
+['a']
+>>> uhoh('b')
+['a', 'b']
+```
+
+---
+# Exercise
+For 15 minutes, on the Python console write:
+1. A for loop that calculates the first 20 numbers of the Fibonacci sequence
+2. A list of the primary colors red, blue, and yellow
+3. Then, use functions on the list instance to add "purple", "green", and "orange" to their proper position between the primary colors
+
+- Also - take a break
+
+---
+
+# Exercise - Solutions
+
+```python
+prev = 0
+curr = 1
+print(0, 1)
+for i in range(0, 20-2):
+  _t = curr
+  curr = curr + prev
+  prev = _t
+  print(curr)
+
+x = ["red", "yellow", "blue"]
+x.insert(1, "orange")
+x.insert(3, "green")
+x.append("purple")
+x
+```
+---
+
+# Docstrings
+```terminal
+def is_prime(number):
+  '''
+  Returns whether the number is a prime value.
+
+  number: integer
+  returns Boolean
+  '''
+  pass
+
+>>> help(is_prime)
+Help on function is_prime in module __main__:
+
+is_prime(number)
+    Returns whether the number is a prime value.
+
+    number: integer
+    returns Boolean
+```
+???
+
+A docstring is a string literal that occurs as the first statement in a module, function, class, or method definition. Such a docstring becomes the __doc__ special attribute of that object.
+
+All modules should normally have docstrings, and all functions and classes exported by a module should also have docstrings. Public methods (including the __init__ constructor) should also have docstrings.
+
+We cover this and more during the programming standard portion of the class.
+---
+# Lambdas
+
+.left-column-wide[
+
+```terminal
+Python 3.8.5
+>>> ops = {
+  ... "add": lambda a, b: a+b,
+  ... "sub": lambda a, b: a-b,
+  ... "mul": lambda a, b: a*b,
+  ... "div": lambda a, b: a+b}  
+
+>>> ops['mul'](3, 4)
+12
+>>> ops['add'](3, 4)
+7
+>>> foo = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> map(lambda i: i*2, foo)
+<map object at 0x7f45f6679160>
+>>> list(map(lambda i: i*2, foo))
+[2, 4, 6, 8, 10, 12, 14, 16, 18]
+>>> list(filter(lambda i: i>5, foo))
+[6, 7, 8, 9]
+```
+]
+.right-column-small[
+- Also known as functional programming
+
+- Functions are also objects in Python, so we can assign variables to functions
+
+- We can pass functions to as parameters to functions for down the road use
+
+- Not super common
+
+]
+---
+# Lambdas - Partial Evaluation
+
+.left-column-wide[
+
+```terminal
+Python 3.8.5
+>>> import re
+>>> re.search("e h", "This is line one")
+
+>>> re.search("e h", "Line two be here")
+<re.Match object; span=(10, 13), match='e h'>
+
+>>> def partial_eval_search(pattern):
+...    return lambda s: re.search(pattern, s)
+
+>>> word_finder = partial_eval_search("findme")
+
+>>> word_finder("Hello to the class")
+
+>>> word_finder("He said findme or find me I think.")
+<re.Match object; span=(8, 14), match='findme'>
+
+```
+
+]
+.right-column-small[
+- Lambdas can be useful when you'd like partial function evaluation.
+
+- It lets you specify some parameters at one point, then the others later
+
+- This is a practical example, except Python's re module provides a "compile" function
+]
+---
+# Exercise
+
+* Check out the tasks.md in the exercises folder
+
+* We'll come together at the end and answer any questions, review someone's code
+
+---
+
+# Code Review
+---
+class: center, middle
+
+#End Day 01
+    </textarea>
+  <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+  </script>
+  <script>
+    // API reference: https://github.com/gnab/remark/wiki/Configuration
+    var slideshow = remark.create({
+      ratio: '16:9',
+      highlightLines: true,
+      highlightSpans: true,
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libproxy.a CMakeFiles/proxy.dir/proxy.c.o
+/usr/bin/ranlib libproxy.a

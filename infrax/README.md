@@ -1,0 +1,7 @@
+# Student Development Support Infrastructure
+Two methods are provided in order to minimize the differences in development environments across the students. Neither of these options is required, however they may prove to be useful. 
+## Vagrant VM
+A Custom Vagrant VM is available with all of the tools and packages pre-built for the course loaded. This is the most comprehensive setup offered as it can run not only all of the command line tools and packages, but also offers all the GUI tools that may be utilized throughout the course. Installation & Usage Instructions can be found [here](./vagrant/README.md)
+
+## Docker Container
+3 Custom Docker Images are available on DockerHub. These images pull the same baseline tools as the Vagrant VM. The three images (slim, partial, & full) represent categories of tooling that can be made available. Slim represents the essential tools and represents the explicit tools required for the course. The partial and slim tools are nice to have and are packages that may be beneficial throughout your development in the course, but are not strictly necessary. The Docker Container is currently limited to running only tools that do not require a desktop environment. Installation & Usage Instructions can be found [here](./docker/README.md)

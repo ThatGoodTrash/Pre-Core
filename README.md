@@ -1,23 +1,35 @@
-# ACME
-## Advanced CNO management environment
+# Pre-CORE 2022
 
-### Overview
+Welcome! Pre-CORE is an Air Force hosted training program to get members up to speed on development topics before entering the CORE training pipeline. This is to ensure that individuals coming from staff/administrative/leadership jobs have the opportunity to brush up prior to the CORE training firehose.
 
-We need to develop a C2 server and cli to control and manage agents.  We will use this
-application during the capstone to remotely manage agents and pivot through the network.
-The C2 will need to have the following basic functionallity:
 
-1. Accept agent connections on a tcp port
-2. Deserialize Response structures
-3. Serialize Command structures
-4. Send an recieve byte streams over a tcp socket
-5. Track unique agents when they connect
-6. Parse CLI for commands and send command appropriately
+## Schedule
 
-A framework has been provided for you along with unit tests to help get started with
-development. See protocol.md for details on the network protocol the agent will use.
-The unit tests cover a large part of the requirements but not all of them, you will have
-to add for functionality and test to complete this project. You may decide to change the
-protocol, or add / remove features not specified in the guidance, but the class will
-assume that you are following these guides and it will be more difficult for the
-instructors to assist you if you do.
+| Date | Location | Course |
+| ---- | -------- | ------ |
+| 31 May - 3 June | Maritime Learning Center | Python |
+| 6 - 10 June | Maritime Learning Center | C | 
+| 13 - 16 June | Maritime Learning Center | ASM/RE |
+| 21 - 24 June | Maritime Learning Center | Capstone | 
+| 27 June - 31 June | Maritime Learning Center | Hardware | 
+| 5 - 8 July | Virtual/Discord | Windows Stuff | 
+
+## Location
+
+The address for the Maritime Learning Center is 700 Maritime Blvd, Linthicum Heights, MD 21090, Suite C.
+
+## Procedures
+
+On the first day of class, you will be assigned an entry badge so you can enter/leave the facility at will. Classes will run from 0800-1630. The location stops letting members enter back into the facility at 1730 each day.
+
+This is a no uniform facility. Military members are required to wear civilian clothing for the duration of the course. NSA badges are not required.
+
+## Software
+
+Review the [Vagrant.md](VAGRANT.md) for instructions to download a pre-setup development environment.
+
+If you are familiar with setting up a C/Python/Assembly workflow, you are able to use your own system.
+
+## Communications
+
+Please ensure that you join the Pre-CORE Discord server. https://discord.gg/EwpGSUTH

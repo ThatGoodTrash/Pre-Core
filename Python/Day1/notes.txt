@@ -1,0 +1,9 @@
+##TODO
+-apt install python3.10-venv
+    -python -m venv .venv
+
+-bytearray(mutable) bytes(immutable)
+
+-tuple(fixed length, immutable) list(variable length, mutable)
+
+-set(mutable collection of unique items, no duplicates)

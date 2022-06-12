@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: monospace;
+        line-height: 1.2;
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: monospace;
+        font-weight: normal;
+        color: #4E99C0;
+      }
+      /*Spacing between items in lists*/
+      li {
+        margin-bottom: 1em;
+      }
+
+      li:last-child {
+        margin-bottom: 0px;
+      }
+
+      code {
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .code {
+        color: #232729;
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .red { color: #f25252; font-weight: bold; }
+      .large { font-size: 2em; }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .make-important {
+        color: #f25252;
+        font-weight: bold;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 1em;
+        color: #9e9c9b;
+        font-size: .8em;
+      }
+      /* Two-column layout */
+      .left-column {
+        width: 49%;
+        float: left;
+      }
+      .right-column {
+        width: 50%;
+        float: right;
+        clear: right;
+      }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .left-column-wide {
+        width: 66%;
+        float: left;
+      }
+      .right-column-small {
+        width: 33%;
+        float: right;
+        clear: right;
+      }
+      .left-column-small {
+        width: 33%;
+        float: left;
+      }
+      .right-column-wide {
+        width: 66%;
+        float: right;
+        clear: right;
+      }
+      .l-c-1 {
+        width: 10%;
+        float: left;
+      }
+      .r-c-9 {
+        width: 90%;
+        float: right;
+        clear: right;
+      }
+      .clearfix {
+        overflow: auto;
+      }
+      /* API reference: https://github.com/gnab/remark/blob/master/src/remark.less */
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #b4b4b4; }
+
+      .remark-slide-content {
+        background-color: #232729;
+        color: #eee;
+      }
+
+      .gap-10 {
+        width: 100%;
+        height: 10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Day 02
+
+---
+
+name: schedule
+# Day 2 Overview
+
+.l-c-1[
+]
+.r-c-9[
+Programming Challenge (0800 - 0830)
+
+Slides (0830 - ~1000)
+ - Classes, class methods
+ - Modules, packages
+
+Exercise (~1000 - 1200)
+
+Lunch / Review (1200 - 1300)
+
+Slides (1300 - 1400)
+ - Multithreading, multiprocessing
+ - File operations, context managers
+
+Exercise (1400 - 1600)
+
+Review (1600 - 1630)
+]
+
+---
+
+## What are classes?
+
+--
+
+ -  A data structure containing both:
+   - data (variables / attributes)
+   - code (functions / methods)
+
+--
+
+From yesterday, what does the following output?
+```python
+x = 7
+print(type(x))
+```
+
+--
+```terminal
+<class 'int'>
+```
+
+--
+How can we use its methods to double it?
+--
+
+```terminal
+>>> x.__mul__(2)
+14
+```
+--
+
+So, "7" belongs to an integer class in Python that implements .make-important[71] methods.
+
+```terminal
+>>> len(dir(x))
+71
+```
+
+---
+
+# Defining classes
+
+From our box diagram on day 1, we can use the .make-important[class] keyword to make our own class.
+
+Creating a class:
+```python
+class Intern:
+  pass
+class OtherIntern(): 
+  pass
+```
+To use our class, we instantiate it:
+
+```terminal
+>>> jcdp_intern = Intern()
+>>> snip_intern = Intern()
+>>> print(jcdp_intern, snip_intern)
+<__main__.Intern object at 0x7faec63684c0> 
+<__main__.Intern object at 0x7faec6cebe50>
+```
+--
+- Without defining how Python should convert it to a string, Python prints the object type + address
+- Each object we instantiate is a separate "box". They don't share memory
+
+---
+
+# Attributes
+
+Any variable inside of a class or object.
+
+```terminal
+>>> jcdp_intern = Intern()
+>>> snip_intern = Intern()
+```
+---
+
+# Attributes
+
+Any variable inside of a class or object.
+
+```terminal
+>>> jcdp_intern = Intern()
+>>> snip_intern = Intern()
+*>>> jcdp_intern.name = "Person A"
+*>>> snip_intern.name = "Person B"
+*>>> jcdp_intern.courses = ["Python", "C"]
+*>>> jcdp_intern.friend = snip_intern
+*>>> snip_intern.year = 2024
+```
+
+---
+
+# Attributes
+
+Any variable inside of a class or object.
+
+```terminal
+>>> jcdp_intern = Intern()
+>>> snip_intern = Intern()
+>>> jcdp_intern.name = "Person A"
+>>> snip_intern.name = "Person B"
+>>> jcdp_intern.courses = ["Python", "C"]
+>>> jcdp_intern.friend = snip_intern
+>>> snip_intern.year = 2024
+*>>> jcdp_intern.name
+*'Person A'
+*>>> snip_intern.name
+*'Person B'
+*>>> snip_intern.year
+*2024
+*>>> snip_intern.courses
+*AttributeError: 'Intern' object has no attribute 'courses'
+```
+
+---
+
+# Methods
+
+Methods are functions in classes or objects. In addition, they can be used in a special manner (properties, staticmethods, classmethods).
+
+One important one in particular is .make-important[\\\_\\\_init\_\_]. It allows attributes to be assigned at creation time.
+
+```python
+class Intern:          # self refers to the individual object itself
+  def __init__(self):  # variables passed to methods are parameters
+    pass               
+```
+
+We can still instantiate it the same:
+
+```terminal
+>>> x = Intern()
+>>> x
+```
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during initialization.
+
+.left-column[
+```terminal
+*class Intern:         
+  def __init__(self, name):
+    self.name = name               
+
+
+>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+*>>> x = Intern("JCDP")
+>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+]
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during initialization.
+
+.left-column[
+```terminal
+*class Intern:         
+  def __init__(self, name):
+    self.name = name               
+
+
+>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+>>> x = Intern("JCDP")
+>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+2. Creates the object in memory
+
+]
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during initialization.
+
+.left-column[
+```terminal
+class Intern:         
+*  def __init__(self, name):
+    self.name = name               
+
+
+*>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+>>> x = Intern("JCDP")
+>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+2. Creates the object in memory
+
+3. Calls the \_\_init__ method
+
+]
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during initialization.
+
+.left-column[
+```terminal
+class Intern:         
+  def __init__(self, name):
+*    self.name = name               
+
+
+>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+>>> x = Intern("JCDP")
+>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+2. Creates the object in memory
+
+3. Calls the \_\_init__ method
+
+4. Stores the value of name into the itself
+
+]
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during intialization.
+
+.left-column[
+```terminal
+class Intern:         
+*  def __init__(self, name):
+    self.name = name               
+
+
+>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+>>> x = Intern("JCDP")
+>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+2. Creates the object in memory
+
+3. Calls the \_\_init__ method
+
+4. Stores the value of name into the itself
+
+5. Returns the object
+
+]
+
+---
+
+# Methods
+
+We can pass parameters into \_\_init__ to have them included during intialization.
+
+.left-column[
+```terminal
+class Intern:         
+  def __init__(self, name):
+    self.name = name               
+
+
+>>> x = Intern()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: __init__() missing 1 required positional 
+argument: 'name'
+
+*>>> x = Intern("JCDP")
+*>>> x
+<__main__.Intern object at 0x7fc7a8cb69d0>
+>>> x.name
+'JCDP'
+```
+]
+.right-column[
+1. Looks up a definition for Intern
+
+2. Creates the object in memory
+
+3. Calls the \_\_init__ method
+
+4. Stores the value of name into the itself
+
+5. Returns the object
+
+6. Stores the object in x
+
+]
+
+---
+
+# Inheritance
+
+In good OOP practice, write as little code as much as possible (DRY) -- kidding.
+
+ * Don't be clever, allow an intermediate programmer to easily follow along
+
+--
+
+```terminal
+>>> class Intern():
+...     def work(self):
+...         print("")
+...
+>>> class JCDPIntern(Intern):
+...     pass
+...
+>>> generic_intern = Intern()
+>>> jcdp_intern = JCDPIntern()
+>>> issubclass(JCDPIntern, Intern)
+True
+```
+
+---
+
+## Overriding / Adding methods
+
+When defining a subclass, its possible to overwrite methods / attributes from the parent class
+
+```terminal
+>>> class Intern():
+*...   def program(self):
+*...     print("CNODP Intern")
+... 
+>>> class JCDPIntern(Intern):
+*...   def program(self):
+*...     print("JCDP - CNODP Intern")
+*...   def squadron_meetings(self):
+*...     print("Don't forget them")  
+... 
+>>> jcdp_intern = JCDPIntern()
+>>> jcdp_intern.program()
+JCDP - CNODP Intern
+>>> jcdp_intern.squadron_meetings()
+Don't forget them
+```
+
+---
+
+# A Super Method
+
+You'll likely need to implement a method for the subclass: i.e. \_\_init__, but you don't want to blow away the parent method.
+
+The .make-important[super] keyword allows a subclass to explicity call its parent's method.
+
+```terminal
+>>> class Intern():
+...    def __init__(self, name):
+...      self.name = name
+... 
+>>> class JCDPIntern(Intern):
+...   def __init__(self, name, squadron):
+...     super().__init__(name)
+...     self.squadron = squadron
+... 
+>>> jcdp_intern = JCDPIntern("Joe", "70 OSS")
+>>> jcdp_intern.name
+'Joe'
+>>> jcdp_intern.squadron
+'70 OSS'
+```
+
+---
+exclude: true
+
+# Multiple Inheritance
+
+---
+exclude: true
+# Mixins
+
+---
+# Accessing Attributes
+
+You might have noticed, that there is no "private", "public", or "internal" attribute modifiers.
+
+How do you prevent someone (another developer) from messing with the class? Ex:
+
+```terminal
+>>> class Intern():
+...    def __init__(self, name):
+...      self.name = name # Important: this should never change!
+... 
+>>> # Someone using it
+>>> intern = Intern("Kate")
+*>>> intern.name = "Lucky"
+>>> intern.name
+'Lucky'
+```
+---
+# Getters / Setters
+
+We can use "getter"/"setter" properties
+
+In Python, you indicate someone shouldn't access something by starting it with a double underscore (\_\_)
+
+```terminal
+>>> class Intern():
+...   def __init__(self, name):
+...     self.__name = name # Important: this should never change!
+...   @property
+...   def name(self):
+...     return self.__name
+...   @name.setter
+...   def name(self, new_name):
+...     self.__name = new_name
+... 
+>>> # Someone using it
+>>> intern = Intern("Kate")
+>>> intern.__name
+*AttributeError: 'Intern' object has no attribute '__name'
+>>> intern._Intern__name # our secret
+'Kate'
+```
+
+---
+# Computed Values
+
+Typically people will dump all their state into objects.
+
+If the result can be calculated from other values, no need to separately store it.
+
+```terminal
+>>> class Person:
+...     def __init__(self, pounds):
+...       self.pounds = pounds
+...     @property
+...     def kilograms(self):
+...       return self.pounds * 0.45359237
+... 
+>>> x = Person(200)
+>>> x.pounds
+200
+>>> x.kilograms
+90.718474
+>>> x.kilograms = 100
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: can't set attribute
+```
+
+
+---
+
+# Method Types
+
+* Instance methods - what we've seen till now
+* Class methods - affects the class as a whole and all objects "@classmethod"
+* Static methods - doesn't affect the class or the instance, used for grouping a method with a class
+
+.left-column[
+```terminal
+>>> class Intern:
+...   count = 0
+...   def __init__(self):
+...     Intern.count += 1
+...
+...   def say(self):
+...     print("I'm in CNODP.")
+...
+...   @classmethod
+...   def children(cls):
+...     print(f"There are {cls.count} intern objects")
+...
+...   @staticmethod
+...   def tours():
+...     print("It could be dev or RE.")
+```
+]
+.right-column[
+```terminal
+>>> x = Intern()
+>>> y = Intern()
+>>> z = Intern()
+>>> Intern.children()
+There are 3 intern objects
+>>> Intern.tours()
+It could be dev or RE.
+```
+]
+
+---
+exclude: true
+# Duck Typing
+
+---
+
+## Overriding Builtin Methods
+
+We still can't .make-important[print(Intern)] or perform an operation like .make-important[Intern + Intern]
+--
+
+* Remember the builtin methods \_\_str\_\_ and \_\_add\_\_ ?
+
+--
+
+.left-column[
+```terminal
+>>> class Intern:
+...  def __init__(self, name):
+...    self.name = name
+...
+...  def __str__(self):
+...    return self.name
+...
+...  def __add__(self, that):
+...    return [self.name, that.name]
+...
+...  def __eq__(self, that):
+...    return self.name == that.name
+...
+...  def __repr__(self):
+...    return f'Intern("{self.name}")'
+```
+]
+.right-column[
+
+]
+
+---
+
+## Overriding Builtin Methods
+
+We still can't .make-important[print(Intern)] or perform an operation like .make-important[Intern + Intern]
+
+* Remember the builtin methods \_\_str\_\_ and \_\_add\_\_ ?
+
+.left-column[
+```terminal
+>>> class Intern:
+...  def __init__(self, name):
+...    self.name = name
+...
+...  def __str__(self):
+...    return self.name
+...
+...  def __add__(self, that):
+...    return [self.name, that.name]
+...
+...  def __eq__(self, that):
+...    return self.name == that.name
+...
+...  def __repr__(self):
+...    return f'Intern("{self.name}")'
+```
+]
+.right-column[
+```terminal
+>>> x = Intern("Ray")
+>>> y = Intern("Jay")
+>>> print(y, x) #uses __str__
+Jay Ray
+>>> x
+Intern("Ray")   #uses __repr__
+>>> y + x
+['Jay', 'Ray']
+>>> x == y
+False
+```
+]
+
+---
+
+# Lots of Magic Methods
+
+.left-column[
+\_\_eq\_\_( self, other )
+
+\_\_ne\_\_( self, other )
+
+\_\_lt\_\_( self, other )
+
+\_\_gt\_\_( self, other )
+
+\_\_le\_\_( self, other )
+
+\_\_ge\_\_( self, other )
+
+\_\_add\_\_( self, other )
+
+\_\_sub\_\_( self, other )
+
+\_\_mul\_\_( self, other )
+
+\_\_floordiv\_\_( self, other )
+
+...
+
+]
+.right-column[
+self == other
+
+self != other
+
+self < other
+
+self > other
+
+self <= other
+
+self >= other
+
+self + other
+
+self – other
+
+self * other
+
+self // other
+
+...
+]
+
+---
+exclude: true
+# Conventions
+
+As we'll discuss later, people need to be able to read your code. For classes:
+ - Start with a capital letter `class Test:`
+ - Variables that people shouldn't interact with start with an .make-important[_]
+  - Python doesn't have "public" / "private" / "internal", so we use naming standards
+ - Same goes for function / methods
+
+
+---
+
+# NamedTuples
+
+* Avoid over-engineering
+* Use lists, dicts, tuples, named tuples, or dataclasses instead of bloated classes
+
+```terminal
+>>> from collections import namedtuple
+>>> Intern = namedtuple("Intern", "name program")
+>>> intern = Intern("Frizzy", "JCDP")
+>>> intern
+Intern(name='Frizzy', program='JCDP')
+>>> intern.name
+'Frizzy'
+>>> intern.program
+'JCDP'
+
+# You can build a named tuple from a dict too
+>>> parts = {"name": "Gill", "program": "SNIP"}
+>>> intern_two = Intern(**parts)
+>>> intern_two
+Intern(name='Gill', program='SNIP')
+
+>>> intern_two.unknown = "uh oh"
+AttributeError: 'Intern' object has no attribute 'unknown'
+```
+
+---
+
+# Dataclasses
+
+If you do want to use classes just to store data, Python 3.7+ introduced dataclasses
+
+```terminal
+>>> from dataclasses import dataclass
+>>> @dataclass
+... class Intern:
+...     name: str
+...     program: str
+...     year: int = 1990
+... 
+>>> intern = Intern("Yi", "JCDP", 2021)
+>>> intern
+Intern(name='Yi', program='JCDP', year=2021)
+>>> alumni = Intern("Rey", "SNIP")
+>>> alumni
+Intern(name='Rey', program='SNIP', year=1990)
+```
+
+---
+
+# Short break & Exercise
+
+1. Make a class called Element with attributes Name, Symbol, Number
+2. Create an Element with class values 'Hydrogen', 'H', and 1
+3. For the Element class, define a method called dump() that prints the values of the object’s attributes
+
+---
+class: center, middle
+# Modules & Packages
+
+---
+
+# Modules
+
+A module is any file of python code that ends in ".py".
+ * The first time we do a "import random" for a Python process, a "random.py" is read from disk.
+
+```python
+# programs.py
+from random import choice
+
+tours = ["exploit dev", "reverse engineering", "data analytics", "analyst", "operator"]
+def pick():
+  return choice(tours)
+```
+
+```python
+# intern.py
+import programs
+
+tour = programs.pick()
+print(f"My first tour is going to be in {tour}")
+```
+
+```terminal
+$ python3 intern.py 
+My first tour is going to be in exploit dev
+```
+
+---
+
+# We Just Want X
+
+ - You can rename modules
+ - You can import specific functions, objects from modules
+
+
+```python
+# programs.py
+*from random import *
+
+tours = ["exploit dev", "reverse engineering", "data analytics", 
+  "analyst", "operator"]
+def pick():
+  return choice(tours)
+```
+
+
+```python
+# intern.py
+*from programs import pick as ummm
+
+*tour = ummm()
+print(f"My first tour is going to be in {tour}")
+```
+
+
+```terminal
+$ python3 intern.py 
+My first tour is going to be in exploit dev
+```
+
+
+---
+
+# Packages
+
+This is fine for a few files, but you'll often need to organize everything into a folder hierarchy
+ * A package is a subdirectory that contains ".py" files. Note: < 3.3, need an \_\_init__.py in the folder
+ * It is possible to have nested directories with python files.
+
+```python
+# background.py
+from tours import dev, re
+print("Dev recommends a background in: ", dev.experience())
+print("RE recommends a background in: ", re.experience())
+
+# tours/dev.py
+def experience():
+    return "C"
+
+# tours/re.py
+def experience():
+    return "Assembly"
+```
+
+```terminal
+$ python3 background.py 
+Dev recommends a background in:  C
+RE recommends a background in:  Assembly
+```
+
+---
+
+# Module Search Path
+
+You'll be working in a ton of different environments / setups
+It's important to understand how Python is utilizing the OS when using libraries/packages
+  * Module search paths & relative imports (next slide) can be a big pain point
+
+```terminal
+>>> import sys
+>>> for place in sys.path:
+...     print(place)
+... 
+
+/usr/lib/python38.zip
+/usr/lib/python3.8
+/usr/lib/python3.8/lib-dynload
+/home/kevin/.local/lib/python3.8/site-packages
+/usr/local/lib/python3.8/dist-packages
+/usr/lib/python3/dist-packages
+
+>>> import sys
+>>> sys.path.insert(0, "/my/secret/modules/folder")
+```
+
+---
+exclude: true
+# Relative / Absolute Imports
+
+If intern.py is in the same directory as your calling problem, you can import it relative to your location with from . import intern.
+
+If it’s in the directory above you: from .. import intern.
+
+If it’s under a sibling directory called creatures: from ..creatures import intern.
+
+The . and .. notation was borrowed from Unix’s shorthand for current directory and parent directory.
+
+---
+exclude: true
+
+# Namespace Packages
+
+---
+exclude: true
+
+# Modules vs Objects
+
+---
+
+# Nifty Builtin Modules
+
+```terminal
+>>> import collections
+>>> x = ['red', 'blue', 'red', 'green', 'blue', 'blue']
+>>> collections.Counter(x)
+Counter({'blue': 3, 'red': 2, 'green': 1})
+>>> 
+>>> d = collections.OrderedDict.fromkeys('abcde')
+>>> ' '.join(d.keys())
+'a b c d e'
+>>> d.move_to_end('b')
+>>> ' '.join(d.keys())
+'a c d e b'
+>>> 
+>>> q = collections.deque()
+>>> q.append(1)
+>>> q.append(2)
+>>> q.append(3)
+>>> q.popleft()
+1
+>>> q
+deque([2, 3])
+```
+
+---
+
+# Nifty Builtin Modules
+
+```terminal
+>>> import itertools
+>>> list(itertools.chain('ABC', 'DEF'))
+>>> list(itertools.cycle('ABCD', 4)) # A B C D A ... forever
+>>> list(itertools.accumulate([1,2,3,4,5]))
+
+>>> import pprint
+>>> stuff = ['spam', 'eggs', 'lumberjack', 'knights', 'ni']
+>>> stuff.insert(0, stuff[:])
+>>> pp = pprint.PrettyPrinter(indent=4)
+>>> pp.pprint(stuff)
+[   ['spam', 'eggs', 'lumberjack', 'knights', 'ni'],
+    'spam',
+    'eggs',
+    'lumberjack',
+    'knights',
+    'ni']
+
+>>> import random
+>>> random.randint(1,10)
+2
+>>> x = ["A", "B", "C"]
+>>> random.shuffle(x)
+>>> print(x)
+['C', 'B', 'A']
+```
+
+---
+exclude: true
+
+# Exercise
+- Make a package called "school", with modules "high", "middle" and "elementary".
+- Each module should have functions:
+  - Function "add_class" that takes one argument, a string that names the class
+  - Function "list_classes" that returns a list of all classes defined so far
+  - Property "name" that gives a school name that may be set
+- Create a script that demonstrates this functionality.
+- Now do this where high, middle and elementary are classes...  Maybe "school" becomes a module instead of a package?
+- BONUS: Create an iterator that can iterate through the class list in school (HINT: use a separate class)
+
+---
+
+# Exercise
+See handout for blackjack exercise description
+
+---
+
+# Lunch / Review
+
+---
+
+# File operations
+
+“I have files, I have computer files and, you know, files on paper. But most of it is really in my head. So God help me if anything ever happens to my head!”
+
+<pre>― George R. R. Martin</pre>
+
+---
+
+# File operations
+
+* File - sequence of bytes stored somewhere on the _filesystem_ and accessed by _filename_.  
+* Directory - A collection of files and directories. Folder can be a synonym for directory.  
+
+--
+
+* We access files through the .make-important[open] keyword.  
+  * .make-important[fileobj = open( filename, mode )]
+
+--
+
+* Modes:  
+  * _r_ - read 
+  * _w_ - write. Create if doesn't exist, overwrite if exists
+  * _x_ - write. Error if file already exists
+  * _a_ - append. Write to the end of the file if it already exists
+
+--
+* Modes pt2:
+  * *t or nothing* - text mode
+  * *b* - binary mode
+---
+
+# Creating / Opening Files
+
+The following two code snippets are equivalent
+
+```terminal
+>>> fout = open('myfile.txt', 'wt')
+>>> print('I created a file.', file=fout)
+>>> fout.close()
+```
+
+```terminal
+>>> fout = open('myfile.txt', 'w')
+>>> print('I created a file.', file=fout)
+>>> fout.close()
+```
+
+---
+
+# Writing Files
+
+```terminal
+>>> text = """An old silent pond
+A frog jumps into the pond —
+Splash! Silence again."""
+>>> fout = open('poem', 'wt')
+>>> fout.write(text)
+70
+>>> fout.close()
+```
+
+---
+# Writing Files
+
+```terminal
+>>> fout = open('poem', 'wt')
+>>> size = len(text)
+>>> offset = 0
+>>> chunk = 20
+>>> while True:
+...     if offset > size:
+...          break
+...     fout.write(text[offset:offset+chunk])
+...     offset += chunk
+...
+20
+20
+20
+10
+>>> fout.close()
+```
+
+--
+
+```terminal
+>>> fout = open('poem', 'xt')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+FileExistsError: [Errno 17] File exists: 'poem'
+```
+
+---
+
+# Reading Files
+
+```terminal
+>>> fin = open('poem', 'rt' )
+>>> poem = fin.read()
+>>> fin.close()
+>>> len(poem)
+70
+```
+
+---
+
+# Reading Files
+
+```terminal
+>>> poem = ''
+>>> fin = open('poem', 'rt' )
+>>> chunk = 20
+>>> while True:
+...     fragment = fin.read(chunk)
+...     if not fragment:
+...         break
+...     poem += fragment
+...
+>>> fin.close()
+>>> len(poem)
+70
+```
+
+---
+# Reading Files
+```terminal
+>>> poem = ''
+>>> fin = open('poem', 'rt' )
+>>> for line in fin:
+...     poem += line
+>>> fin.close()
+>>> len(poem)
+```
+
+---
+
+# Read / Write Binary Files
+
+```terminal
+>>> bdata = bytes(range(0, 256))
+>>> len(bdata)
+256
+>>> fout = open('bfile', 'wb')
+>>> fout.write(bdata)
+256
+>>> fout.close()
+>>> fin = open('bfile', 'rb')
+>>> bdata = fin.read()
+>>> len(bdata)
+256
+>>> fin.close()
+>>> print(bdata)
+b'\x00\x01\x02...'
+>>> print(type(bdata))
+<class 'bytes'>
+```
+
+---
+
+# Context Managers
+
+Python has context managers to help manage resources with a scoped lifetime.
+* _with expression as variable_
+* After the block of code within the context manager finishes. The file closes automatically.
+
+.left-column[
+```terminal
+>>> with open('relativity', 'wt') as fout:
+...     fout.write(poem)
+...
+```
+]
+.right-column[
+1. calls \_\_enter\_\_ on the context manager object
+2. open() function returns an instance of TextIOWrapper
+3. \_\_enter\_\_ method returns self
+4. the \_\_exit\_\_ method is invoked on the context manager object (not the object returned by enter!)
+]
+
+---
+# Context Managers
+.left-column-wide[
+```terminal
+>>> class ContextTest(object):
+...       def __init__(self, val):
+...           self.val = val
+...           print "Initializing: {}".format(self.val)
+...       def __enter__(self):
+...           print "Entering: {}".format(self.val)
+...           return self
+...       def __exit__(self, type, value, traceback):
+...           print "Exiting: {} {} {} {}".format(self.val, type, \
+...                value, traceback)
+... 
+
+>>> with ContextTest(15) as c:
+...       print "Inside the context: {}".format(c)
+... 
+Initializing: 15
+Entering: 15
+Inside the context: <__main__.ContextTest 
+                                      object at 0x1065040d0>
+Exiting: 15 None None None
+>>> c
+<__main__.ContextTest object at 0x1065040d0>
+```
+]
+.right-column-small[
+]
+
+---
+# Context Managers
+
+```python
+class ReverseStringS:
+  def __enter__(self):
+    import sys
+    self.original_write = sys.stdout.write
+    sys.stdout.write = self.reverse_write
+    return 'MY FUN STRING'
+
+  def reverse_write(self, text):
+    self.original_write(text[::-1])
+
+  def __exit__(self, exc_type, exc_value, traceback):
+    import sys
+    sys.stdout.write = self.original_write 
+```
+
+---
+# Context Managers
+
+```python
+import contextlib
+
+
+@contextlib.contextmanager
+def reverse_strings():
+  import sys
+  original_write = sys.stdout.write
+
+  def reverse_write(text):  3
+    original_write(text[::-1])
+
+  sys.stdout.write = reverse_write
+  yield 'MY FUN STRING'
+  sys.stdout.write = original_write
+```
+
+---
+
+## Dealing with Filesystems (os)
+.left-column-wide[
+```terminal
+>>> import os
+>>> os.path.exists('file.txt')
+True
+>>> os.path.exists('doesnotexist.txt')
+False
+>>> os.path.isfile('file.txt')
+True
+>>> os.path.isdir('file.txt')
+False
+>>> os.path.isabs('file.txt')
+False
+>>> os.remove('file.txt')
+>>> os.path.exists('file.txt')
+False
+```
+]
+.right-column-small[
+* The _os_ module provides an independent interface
+  * Files
+  * Directories
+  * File permissions
+  * Changing directories
+]
+
+---
+
+## Dealing with Filesystems (pathlib)
+.left-column-wide[
+```terminal
+>>> from pathlib import Path
+>>> file_path = Path('one') / 'two' / 'file.txt'
+>>> file_path
+PosixPath('one/two/file.txt')
+>>> print(file_path)
+one/two/file.txt
+>>> file_path.name
+'file.txt'
+>>> file_path.suffix
+'.txt'
+>>> file_path.stem
+'file'
+
+>>> Path(".").resolve()
+WindowsPath('C:/Users/kevin/Desktop/programming/planning')
+>>> Path("README.md").read_bytes()
+b"# 2021 PreCore Training Info:\n\n...."
+```
+]
+.right-column-small[
+New in Python 3!
+* The _pathlib_ module provides a Pythonic independent interface
+  * Files
+  * Directories
+  * File permissions
+  * Changing directories
+  * Provides wrappers to read/write from files
+]
+---
+
+# Break & Exercise
+
+* Given a path / directory
+
+  * Print all the files
+  * Print all the directories
+  * Include subdirectories / files
+
+---
+
+# Glob
+My favorite module for finding files
+.left-column-wide[
+```terminal
+>>> import glob, pathlib
+>>> glob.glob("*")
+['Archived', 'ASM_RE', ...,'README.md', 'Roster.md']
+
+>>> glob.glob("*.md")
+['Objectives.md', 'README.md', 'Roster.md']
+
+>>> pathlib.Path(".").rglob("*.md")
+<generator object Path.rglob at 0x000001F7B6508890>
+
+>>> list(pathlib.Path(".").rglob("*.md"))
+[WindowsPath('Archived/2020/Capstone/2017/README.md'), WindowsPath('Objectives.md'), ...]
+
+>>> list(pathlib.Path(".").glob("*.md"))
+[WindowsPath('Objectives.md'), WindowsPath('README.md'), ...]
+```
+]
+
+.right-column-small[
+* Matches file or directory names
+
+* Uses Unix shell rules rather that full Regex syntax
+
+  * _*_ matches everything
+  * _?_ matches single character
+  * _[abc]_ matches a, b, or c
+  * _[!abc] matches anything but a, b, or c
+]
+---
+
+# In-Memory Data
+
+What do you do if you have in-memory data, but want to call a function that expects a file (or the reverse)?
+* Some libraries/functions only deal with files
+--
+
+* io.BytesIO for binary data*
+* io.StringIO for text data*
+* both wrap a file-like object
+--
+
+```terminal
+>>> from io import BytesIO 
+>>> x = b"these are data bytes but not in a file!"
+>>> fake_file = BytesIO(x)
+>>> fake_file
+>>> dir(fake_file)
+[..., 'flush', 'getbuffer', 'getvalue', 'isatty', 'read', 'read1', 'readable', 'readinto', 
+'readinto1', 'readline', 'readlines', 'seek', 'seekable', 'tell', 'truncate', 'writable', 'write', 
+'writelines']
+```
+.footnote[*Remember this is possible, otherwise you'll be in a world of frustration down the road]
+
+---
+
+# Creating external processes
+
+Python provides the _subprocess_ module to interface with external programs
+
+.left-column[
+```terminal
+>>> import subprocess
+>>> ret = subprocess.getoutput('date')
+>>> ret
+'Sat 29 May 2021 12:12:52 PM EDT'
+>>> ret = subprocess.call("whoami")
+>>> ret
+0
+>>> ret = subprocess.call(["whoami", "-x"])
+>>> ret
+1
+>>> ret = subprocess.call("date -u", shell=True)
+>>> ret
+0
+```
+]
+.right-column[
+* _getoutput_ grab both stdout and sterr
+* _check_output_ captures stdout
+* _call_ run a program, get status code
+* use _shell_ to have subprocess split the strings
+]
+
+---
+
+# Concurrency Overview
+- I/O Bound
+  - The most common scenario. CPU's are fast. Networks, disks, RAM are slow
+- CPU Bound
+  - Happens when you're doing hard math
+
+- Synchronous
+  - One thing follows another
+  - Mulithreading (python version)
+  - Multiprocessing (python version)
+- Asynchronous
+  - Tasks are independent
+
+---
+
+# Multiprocessing
+
+```python
+import multiprocessing
+import os
+
+def whoami(what):
+  print(f"Process {os.getpid()} says: {what}")
+
+if __name__ == "__main__":
+  whoami("I'm the main program")
+  for n in range(4):
+    p = multiprocessing.Process(target=whoami, args=(f"I'm function {n}",))
+    p.start()
+
+'''
+Process 239 says: I'm the main program
+Process 251 says: I'm function 0
+Process 252 says: I'm function 1
+Process 253 says: I'm function 2
+Process 254 says: I'm function 3
+'''
+```
+
+---
+
+# Multithreading
+
+```python
+import threading
+import os
+
+def whoami(what):
+  print(f"Process {os.getpid()} says: {what}")
+
+if __name__ == "__main__":
+  whoami("I'm the main program")
+  for n in range(4):
+    p = threading.Thread(target=whoami, args=(f"I'm function {n}",))
+    p.start()
+'''
+Process 239 says: I'm the main program
+Process 239 says: I'm function 0
+Process 239 says: I'm function 1
+Process 239 says: I'm function 2
+Process 239 says: I'm function 3
+'''
+```
+
+---
+
+# Async
+
+What if you're running a webserver, dealing with 100's of request/s. Do you spawn a new process or thread for every request?  The overhead is sizeable
+
+What if we just have a thread checking to see which section of code is ready to continue.
+ * Enter asynchronous programming / coroutines
+ * Single thread dealing with multiple tasks
+
+---
+
+# Exercise
+
+---
+
+#End Day 02
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      // API reference: https://github.com/gnab/remark/wiki/Configuration
+      var slideshow = remark.create({
+        ratio: '16:9',
+        highlightLines: true,
+        highlightSpans: true,
+      });
+    </script>
+  </body>
+</html>

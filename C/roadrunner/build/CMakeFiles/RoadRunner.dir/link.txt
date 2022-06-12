@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/RoadRunner.dir/src/roadrunner.c.o -o ../bin/RoadRunner  src/modules/helloworld/libhelloworld.a src/modules/commands/libcommands.a src/modules/core/libcore.a src/modules/files/libfiles.a src/modules/sys/libsys.a src/modules/proxy/libproxy.a src/modules/commands/libcommands.a 

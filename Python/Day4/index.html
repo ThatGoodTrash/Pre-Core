@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: monospace;
+        line-height: 1.2;
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: monospace;
+        font-weight: normal;
+        color: #4E99C0;
+      }
+      /*Spacing between items in lists*/
+      li {
+        margin-bottom: 1em;
+      }
+
+      li:last-child {
+        margin-bottom: 0px;
+      }
+
+      code {
+        background: #e7e8e2;
+        color: #232729;
+        border-radius: 5px;
+      }
+      .code {
+        color: #232729;
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .red { color: #f25252; font-weight: bold; }
+      .large { font-size: 2em; }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .make-important {
+        color: #f25252;
+        font-weight: bold;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 1em;
+        color: #9e9c9b;
+        font-size: .8em;
+      }
+      /* Two-column layout */
+      .left-column {
+        width: 49%;
+        float: left;
+      }
+      .right-column {
+        width: 50%;
+        float: right;
+        clear: right;
+      }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .left-column-wide {
+        width: 66%;
+        float: left;
+      }
+      .right-column-small {
+        width: 33%;
+        float: right;
+        clear: right;
+      }
+      .left-column-small {
+        width: 33%;
+        float: left;
+      }
+      .right-column-wide {
+        width: 66%;
+        float: right;
+        clear: right;
+      }
+      .l-c-1 {
+        width: 10%;
+        float: left;
+      }
+      .r-c-9 {
+        width: 90%;
+        float: right;
+        clear: right;
+      }
+      .clearfix {
+        overflow: auto;
+      }
+      /* API reference: https://github.com/gnab/remark/blob/master/src/remark.less */
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #b4b4b4; }
+
+      .remark-slide-content {
+        background-color: #232729;
+        color: #eee;
+      }
+
+      .gap-10 {
+        width: 100%;
+        height: 10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Day 04
+---
+
+class: center
+name: schedule
+## Schedule
+
+.left[
+HackerRank (0800 - 0830)  
+Slides (0830 - 1000)
+ - Python requests module
+ - Socket / network Programming
+ - Server programming (sockets)
+
+Exercise (~1000 - 1200)  
+Lunch / Review (1200 - 1230)  
+Slides (1230 - 1400)
+ - Asynchronous socket programming
+ - Asyncio
+ - Additional Libaries
+
+Exercise (1400 - 1600)  
+Review (1600 - 1630)
+]
+
+---
+
+## Network programming
+
+We've covered data in memory and data at rest (filesystem). Lastly, our data can exist in transit.
+
+---
+
+.center[![data_meme](resources/data_meme.jpg)]
+
+---
+
+## HTTP - Python Requests
+
+The Hypertext Transfer Protocol (HTTP) is an application layer protocol for distributed, collaborative, hypermedia information systems.
+ * I hope everyone is familiar with it
+
+--
+
+The Python module we'll use to interact with HTTP services is .make-important[requests]
+ * Not part of the standard library, but it is what everyone uses
+ * You should be able to expect it
+ * Worst case, the other libraries are close enough
+
+
+---
+## Requests - Get Requests
+.left-column-wide[
+```python
+import requests
+
+r = requests.get("https://httpbin.org/get", verify=True)
+print(r.status_code)
+print(r.text)
+print(r.content)
+print(r.json())
+
+headers = {
+  "User-Agent": "I-Am-A-Robot"
+}
+# note the query parameters
+r = requests.get("https://httpbin.org/get?A=1&B=2", headers=headers, 
+  verify=True)
+print(r.text)
+```
+]
+.right-column-small[
+* HTTPS verification through the ** verify** keyword
+* **.json()** built in function to read results as JSON data
+* Most high level functionality of the request can be modified
+
+]
+
+---
+
+## Requests - Posting Data
+.left-column-wide[
+```python
+import requests
+
+r = requests.post("https://httpbin.org/post", verify=True)
+print(r.status_code)
+print(r.text)
+
+headers = {
+  "Cookie": "Monster"
+}
+data = {
+  "key" : "value"
+}
+r = requests.post("https://httpbin.org/post", headers=headers, 
+  data=data, verify=True)
+print(r.text)
+```
+]
+.right-column-small[
+* Posts follow the same syntax
+* **data=** parameter allows us to specify post data
+]
+
+---
+
+## Requests - Upload a File
+.left-column-wide[
+```python
+import requests
+
+r = requests.post("https://httpbin.org/post", verify=True)
+print(r.status_code)
+print(r.text)
+
+headers = {
+  "Cookie": "Monster"
+}
+*files = {'upload_file': open('file.txt','rb')}
+
+r = requests.post("https://httpbin.org/post", files=files)
+
+print(r.text)
+
+>>> print(requests.Request('POST', 'https://httpbin.org/post', 
+...   files=files).prepare().body.decode()))
+
+--bec24b660384f6848733dd0d03c49f90
+*Content-Disposition: form-data; name="upload_file"; filename="file.txt"
+
+Some data!
+--bec24b660384f6848733dd0d03c49f90--  
+```
+]
+.right-column-small[
+* Just as easy to upload a file
+]
+
+---
+## Requests - Example Flow
+.left-column-wide[
+```python
+import requests
+
+def process_jobs():
+  #What if this thows an exception?
+  r = requests.get("https://c2managerurl")
+* if r.status_code != 200:
+    print("trouble getting c2 jobs data")
+    handle_exception()
+  
+  if len(r.content) == 0:
+    print("empty jobs response")
+    handle_exception()
+  
+  jobs_data = r.json()
+  results = process_job_data(jobs_data)
+
+  r = requests.post("https://c2managerurl", data=results)
+  if r.status_code != 200:
+    print("unable to update job update")
+    handle_job_update_fail()
+
+  return True #Some success code
+```
+]
+.right-column-small[
+1. Check that we get a valid status code.
+]
+
+---
+## Requests - Example Flow
+.left-column-wide[
+```python
+import requests
+
+def process_jobs():
+  #What if this thows an exception?
+  r = requests.get("https://c2managerurl")
+  if r.status_code != 200:
+    print("trouble getting c2 jobs data")
+    handle_exception()
+  
+* if len(r.content) == 0:
+    print("empty jobs response")
+    handle_exception()
+  
+  jobs_data = r.json()
+  results = process_job_data(jobs_data)
+
+  r = requests.post("https://c2managerurl", data=results)
+  if r.status_code != 200:
+    print("unable to update job update")
+    handle_job_update_fail()
+
+  return True #Some success code
+```
+]
+.right-column-small[
+1. Check that we get a valid status code.
+2. Before running .json(), make sure we got data
+]
+
+---
+## Requests - Example Flow
+.left-column-wide[
+```python
+import requests
+
+def process_jobs():
+  #What if this thows an exception?
+  r = requests.get("https://c2managerurl")
+  if r.status_code != 200:
+    print("trouble getting c2 jobs data")
+    handle_exception()
+  
+  if len(r.content) == 0:
+    print("empty jobs response")
+    handle_exception()
+  
+* jobs_data = r.json()
+  results = process_job_data(jobs_data)
+
+  r = requests.post("https://c2managerurl", data=results)
+  if r.status_code != 200:
+    print("unable to update job update")
+    handle_job_update_fail()
+
+  return True #Some success code
+```
+]
+.right-column-small[
+1. Check that we get a valid status code.
+2. Before running .json(), make sure we got data
+3. Interpret the data as JSON
+]
+
+---
+## Requests - Example Flow
+.left-column-wide[
+```python
+import requests
+
+def process_jobs():
+  #What if this thows an exception?
+  r = requests.get("https://c2managerurl")
+  if r.status_code != 200:
+    print("trouble getting c2 jobs data")
+    handle_exception()
+  
+  if len(r.content) == 0:
+    print("empty jobs response")
+    handle_exception()
+  
+  jobs_data = r.json()
+  results = process_job_data(jobs_data)
+
+  #Note that we can set post data
+* r = requests.post("https://c2managerurl", data=results)
+* if r.status_code != 200:
+*   print("unable to update job update")
+*   handle_job_update_fail()
+
+  return True #Some success code
+```
+]
+.right-column-small[
+1. Check that we get a valid status code.
+2. Before running .json(), make sure we got data
+3. Interpret the data as JSON
+4. Do other stuff
+]
+
+---
+## Short Exercise
+
+* Check out http://precoreexercises.com:8010
+
+---
+## Sockets - How to Move Bytes
+
+Reminder:
+* TCP (Transmission Control Protocol) - Long lived / stateful connections  
+
+--
+
+Do you want to hear a TCP joke?  
+Yes, I want to hear a TCP joke.  
+Okay, I'll tell you a TCP joke.  
+Okay, I'll hear a TCP joke.  
+Okay, I'll send you a TCP joke now.  
+Okay, I'll receive the TCP joke now.    
+
+--
+* UDP (User Datagram Protocol) - Short exchanges / stateless
+
+--
+
+Here's a UDP joke. Get it?  
+--
+
+---
+## Creating a UDP socket
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+*import socket
+from datetime import datetime
+
+server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(b'Hey!', server_address)
+data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+*server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(b'Hey!', server_address)
+data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Specify connection details as a Tuple
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+*client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(b'Hey!', server_address)
+data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Specify connection details as a Tuple
+3. Create a UDP socket (SOCK_DGRAM)
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+*client.sendto(b'Hey!', server_address)
+data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Specify connection details as a Tuple
+3. Create a UDP socket (SOCK_DGRAM)
+4. Send out data (sendto is UDP specific)
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(b'Hey!', server_address)
+*data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Specify connection details as a Tuple
+3. Create a UDP socket (SOCK_DGRAM)
+4. Send out data (sendto is UDP specific)
+5. Wait for a response & read max of 4096 bytes from it
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+
+---
+## Creating a UDP socket
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+server_address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.sendto(b'Hey!', server_address)
+data, server = client.recvfrom(max_size)
+print('At', datetime.now(), server, 'said', data)
+*client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Specify connection details as a Tuple
+3. Create a UDP socket (SOCK_DGRAM)
+4. Send out data (sendto is UDP specific)
+5. Wait for a response & read max of 4096 bytes from it
+6. Close our socket
+]
+
+???
+
+NOTE:
+
+UDP sends data in single chunks, and it does not guarantee delivery. If you send multiple messages via UDP, they can arrive out of order, or not at all. It’s fast, light, connectionless, and unreliable. UDP is useful when you need to push packets quickly, and can tolerate a lost packet now and then, such as with VoIP (voice over IP).
+
+---
+
+## UDP Demo
+
+```terminal
+$ python3 udp_server.py (1)
+
+Starting the server at 2021-05-15 18:27:58.652701
+Waiting for a client to call.
+
+```
+
+---
+
+## UDP Demo
+
+```terminal
+$ python3 udp_server.py (1)
+
+Starting the server at 2021-05-15 18:27:58.652701
+Waiting for a client to call.
+At 2021-05-15 18:27:58.652701 ('127.0.0.1', 46955) said b'Hey!'
+```
+
+```terminal
+$ python3 udp_client.py (2)
+
+Starting the client at 2021-05-15 18:27:58.653561
+```
+
+---
+
+## UDP Demo
+
+```terminal
+$ python3 udp_server.py (1)
+
+Starting the server at 2021-05-15 18:27:58.652701
+Waiting for a client to call.
+At 2021-05-15 18:27:58.652701 ('127.0.0.1', 46955) said b'Hey!'
+```
+
+```terminal
+$ python3 udp_client.py (2)
+
+Starting the client at 2021-05-15 18:27:58.653561
+At 2021-05-15 18:27:58.653561 ('127.0.0.1', 6789) said b'Are you talking to me?'
+```
+---
+
+## TCP Sockets
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+*import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+]
+
+???
+
+UDP sends messages, but their size is limited and they’re not guaranteed to reach their destination.
+
+TCP sends streams of bytes, not messages. You don’t know how many bytes the system will send or receive with each call.
+
+To exchange entire messages with TCP, you need some extra information to reassemble the full message from its segments: a fixed message size (bytes), or the size of the full message, or some delimiting character.
+
+Because messages are bytes, not Unicode text strings, you need to use the Python bytes type. For more information on that, see Chapter 12.
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+*address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again) 
+]
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+*client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again)
+3. Initialize our socket (SOCK_STREAM is TCP)
+]
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+*client.connect(address)
+client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again)
+3. Initialize our socket (SOCK_STREAM is TCP)
+4. Open a connection to the server
+]
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+*client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again)
+3. Initialize our socket (SOCK_STREAM is TCP)
+4. Open a connection to the server
+5. Send our data (send vs sendall)
+]
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+client.sendall(b'Hey!')
+*data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again)
+3. Initialize our socket (SOCK_STREAM is TCP)
+4. Open a connection to the server
+5. Send our data (send vs sendall)
+6. Receive upto 1000 bytes
+]
+
+---
+
+## TCP Sockets
+
+.left-column-wide[
+```python
+import socket
+from datetime import datetime
+
+address = ('localhost', 6789)
+max_size = 1000
+
+print('Starting the client at', datetime.now())
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(address)
+client.sendall(b'Hey!')
+data = client.recv(max_size)
+print('At', datetime.now(), 'someone replied', data)
+*client.close()
+```
+]
+.right-column-small[
+1. Import socket library
+2. Initialize connection details (Tuple again)
+3. Initialize our socket (SOCK_STREAM is TCP)
+4. Open a connection to the server
+5. Send our data (send vs sendall)
+6. Receive upto 1000 bytes
+7. Close the connection
+]
+
+---
+
+## TCP Send vs Sendall
+
+What's the difference?
+
+.left-column[
+```python
+import socket
+
+address = ('localhost', 6789)
+max_size = 1000
+
+client = socket.socket(socket.AF_INET, 
+  socket.SOCK_STREAM)
+client.connect(address)
+*client.sendall(b'Hey!')
+data = client.recv(max_size)
+client.close()
+```
+]
+.right-column[
+```python
+import socket
+
+address = ('localhost', 6789)
+max_size = 1000
+
+client = socket.socket(socket.AF_INET, 
+  socket.SOCK_STREAM)
+client.connect(address)
+*client.send(b'Hey!')
+data = client.recv(max_size)
+client.close()
+```
+]
+
+---
+
+## TCP Send vs Sendall
+
+What's the difference?
+
+* **socket.send** - Low level method wrapping around the C/syscall **send** method. It does not have to send all the data you requested sent. It returns how many bytes were actually sent.
+
+* **socket.sendall** - High level Python wrapper that sends all of your data and throws an Exception if something happens. It keeps calling **send** until all the data is reported as sent.
+ * Typically you can use **sendall**
+
+
+---
+
+## Sendall Under the Hood
+
+A simplified CPython Implementation:
+```python
+def sendall(sock, data, flags=0):
+    ret = sock.send(data, flags)
+    if ret > 0:
+        return sendall(sock, data[ret:], flags)
+    else:
+        return None
+```
+
+---
+
+## How do I Encrypt it?
+
+We can use the builtin .make-important[ssl] modules to encrypt socket communications.
+
+--
+
+```python
+import socket
+import ssl
+from datetime import datetime
+
+address = ('localhost', 6789)
+hostname = address[0]
+context = ssl.create_default_context()
+max_size = 1000
+
+with socket.create_connection(address) as sock:
+    with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        ssock.sendall(b'Hey!')
+        data = ssock.recv(max_size)
+        print('At', datetime.now(), 'someone replied', data)
+
+```
+
+---
+## Short Exercise
+
+* Try sending a UDP packet to precoreexercises.com on port 10100
+
+ * What do you get back?
+
+---
+## Servers & Sockets - How to get some Bytes
+
+
+---
+## UDP Server
+
+.left-column-wide[
+```python
+from datetime import datetime
+import socket
+
+address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the server at', datetime.now())
+print('Waiting for a client to call.')
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+*server.bind(address)
+
+*data, client = server.recvfrom(max_size)
+
+print('At', datetime.now(), client, 'said', data)
+server.sendto(b'Are you talking to me?', client)
+server.close()
+```
+]
+.right-column-small[
+* We need to **bind** to the connection information.
+* Telling the OS that we want this configuration.
+* We can try to send a UDP packet back to the sender, no guarantee that it will make it there.
+]
+
+---
+## TCP Server
+
+.left-column-wide[
+```python
+from datetime import datetime
+import socket
+
+address = ('localhost', 6789)
+max_size = 4096
+
+print('Starting the server at', datetime.now())
+print('Waiting for a client to call.')
+*server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(address)
+*server.listen(5)
+
+*client, addr = server.accept()
+data = client.recv(max_size)
+
+print('At', datetime.now(), client, 'said', data)
+client.sendall(b'Are you talking to me?')
+*client.close()
+server.close()
+```
+]
+.right-column-small[
+* With TCP, we can specify the connection backlog. 
+* Unless you get very, very busy, it won't ever be an issue.
+* We need to explicitly close connections for every client
+]
+
+---
+## Domains to IPs
+
+There are multiple libraries that can convert domain names to ip addresses. 
+* Using the **socket** standard library, it is performed using:
+
+```terminal
+>>> import socket
+>>> socket.gethostbyname('precoreexercises.com')
+'174.138.45.233'
+
+```
+
+---
+## Exercise
+
+The exercise for this section is .make-important[networking].
+
+---
+
+## Lunch / Review
+
+---
+## Threads/Processes/Async?
+
+```python
+if io_bound:
+    if io_very_slow:
+        print("Use Asyncio")*
+    else:
+        print("Use Threads")
+else:
+    print("Multi Processing")
+```
+
+.footnote[*Async code should never do CPU heavy tasks]
+
+
+---
+
+### Async Review
+
+.center[![async](resources/syn_async.png)]
+
+---
+## Async (3.5+)
+
+With the introduction of Python 3.4/3.5, asynchronous features were added to Python. In particular:
+
+* Coroutines are functions that pause at various points
+* An event loop that schedules and runs coroutines
+
+
+--
+
+.left-column[
+```python
+import asyncio
+
+*async def main():
+    print('Hello ...')
+*   await asyncio.sleep(1)
+    print('... World!')
+
+## Python 3.7+
+asyncio.run(main())
+```
+]
+.right-column[
+* .make-important[async def] - a coroutine or asynchronous generator
+
+* .make-important[await] - passes control back to the event loop
+ * I am waiting on X, other stuff can run until X finishes.
+]
+
+???
+
+Your CPU can do only one thing at a time, so synchronous execution makes perfect sense. But it turns out that often a program is not actually running any code, but waiting for something, like data from a file or a network service. This is like us staring at a browser screen while waiting for a site to load. If we could avoid this “busy waiting,” we might shorten the total time of our programs. This is also called improving throughput.
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+  await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+* asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+]
+
+???
+
+asyncio.gather - Run awaitable objects in the aws sequence concurrently.
+
+If any awaitable in aws is a coroutine, it is automatically scheduled as a Task.
+
+If all awaitables are completed successfully, the result is an aggregate list of returned values. The order of result values corresponds to the order of awaitables in aws.
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+* await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+]
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+* await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+3. asyncio.gather is awaitable, so return control to task loop
+]
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+*async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+  await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+3. asyncio.gather is awaitable, so return control to task loop
+4. One of the **count** tasks starts executing
+]
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+* await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+  await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+3. asyncio.gather is awaitable, so return control to task loop
+4. One of the **count** tasks starts executing
+5. First **count** task hits some "io", returns control to task loop until done
+]
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+* await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+  elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+3. asyncio.gather is awaitable, so return control to task loop
+4. One of the **count** tasks starts executing
+5. First **count** task hits some "io", returns control to task loop until done
+6. All **count** tasks finish, await can return for **async main**
+]
+
+---
+## Async Example
+
+.left-column-wide[
+```python
+import asyncio
+
+async def count():
+  print("One")
+  await asyncio.sleep(1)
+  print("Two")
+
+async def main():
+  await asyncio.gather(count(), count(), count()) (1)
+
+if __name__ == "__main__":
+  import time
+  s = time.perf_counter()
+  asyncio.run(main())
+* elapsed = time.perf_counter() - s
+  print(f"Executed in {elapsed:0.2f} seconds.")
+
+$ python3 countasync.py
+One
+One
+One
+Two
+Two
+Two
+Executed in 1.01 seconds.
+```
+]
+.right-column-small[
+1. use asyncio to start our "main" coroutine
+2. Starts 3 Tasks/coroutines
+3. asyncio.gather is awaitable, so return control to task loop
+4. One of the **count** tasks starts executing
+5. First **count** task hits some "io", returns control to task loop until done
+6. All **count** tasks finish, await can return for **async main**
+7. We now can continue in our original code
+]
+
+---
+## Async Example
+
+```terminal
+>>> async def mygen(u: int = 10):
+...     """Yield powers of 2."""
+...     i = 0
+...     while i < u:
+...         yield 2 ** i
+...         i += 1
+...         await asyncio.sleep(0.1)
+
+>>> async def main():
+...     # This does *not* introduce concurrent execution
+...     # It is meant to show syntax only
+...     g = [i async for i in mygen()]
+...     f = [j async for j in mygen() if not (j // 3 % 5)]
+...     return g, f
+...
+>>> g, f = asyncio.run(main())
+What are g/f? Are they in order?
+```
+
+--
+
+```terminal
+>>> g
+[1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+>>> f
+[1, 2, 16, 32, 256, 512]
+```
+
+???
+
+The async for and async with statements are only needed to the extent that using plain for or with would “break” the nature of await in the coroutine. This distinction between asynchronicity and concurrency is a key one to grasp.
+
+---
+
+## Async Sockets
+
+How does it relate?
+
+---
+
+## Async TCP Client
+
+```python
+import asyncio
+address = ("localhost", 1234)
+
+async def tcp_client(message):
+  reader, writer = await asyncio.open_connection(address)
+
+  print(f'Send: {message!r}')
+  writer.write(message.encode())
+  await writer.drain()
+
+  data = await reader.read(100)
+  print(f'Received: {data.decode()!r}')
+
+  print('Close the connection')
+  writer.close()
+  await writer.wait_closed()
+
+asyncio.run(tcp_client('Hello World!'))
+```
+
+---
+
+## Async UDP Server
+
+```python
+import asyncio
+address = ("localhost", 1234)
+
+class UDPServer(asyncio.DatagramProtocol):
+  def __init__(self):
+    super().__init__()
+
+  def connection_made(self, transport):
+    self.transport = transport
+
+  def datagram_received(self, data, addr):
+    print(f"Received message: {data}")
+    self.transport.sendto(data, addr)
+
+
+loop = asyncio.get_event_loop()
+t = loop.create_datagram_endpoint(UDPServer, local_addr=address)
+loop.run_until_complete(t)
+loop.run_forever()
+```
+---
+
+## Async TCP Server
+
+```python
+import asyncio, socket
+
+async def handle_client(reader, writer):
+  request = None
+  while request != 'quit':
+    request = (await reader.read(255)).decode('utf8')
+    response = str(eval(request)) + '\n'
+    writer.write(response.encode('utf8'))
+    await writer.drain()
+  writer.close()
+
+async def run_server():
+  server = await asyncio.start_server(handle_client, 'localhost', 15555)
+  async with server:
+    await server.serve_forever()
+
+asyncio.run(run_server())
+```
+
+---
+## Exercise
+
+The exercise for this section is the .make-important[async-networking].
+
+Go until ~1530, then we'll cover a couple other interesting modules briefly & wrap up
+
+---
+## Useful Libraries
+There are so many Python libraries out there, pick a few core ones and learn how to effectively use them.
+- Pillow (image processing)
+- Scapy (Raw packets)
+- argparse / click (cli)
+
+- Many others 
+ - https://awesome-python.com/
+ - https://github.com/vinta/awesome-python
+---
+## pillow
+
+```terminal
+>>> from PIL import Image
+>>> my_image = Image.open("syn_async.png")
+>>> my_image.info
+{'srgb': 0, 'gamma': 0.45455, 'dpi': (96, 96), 'Comment': 'Created with GIMP'}
+>>> dir(my_image)
+[... 'getdata', ..., 'getpixel', 'height', ... 'resize', 
+'rotate', 'save', 'seek', 'show', ...]
+
+>>> width = 100
+>>> height = 100
+>>> params = (width, height)
+>>> my_image.resize(params)
+<PIL.Image.Image image mode=RGBA size=100x100 at 0x7FF6C9FE85E0>
+
+>>> with open("new_image.png", "wb") as f:
+...   f.write(my_image.tobytes())
+
+>>> my_image.getpixel((0, 0))
+(255, 255, 255, 255)
+```
+
+---
+## Scapy
+
+Scapy is a python library that allows you to manually build network packets
+* You can modify any field / value / setting to your hearts content
+
+```terminal
+$ sudo scapy
+>>> p = IP(dst="github.com")/ICMP()
+>>> p
+<IP  frag=0 proto=icmp dst=Net('github.com') |<ICMP  |>>
+>>> r = sr1(p)
+Begin emission:
+Finished sending 1 packets.
+.*
+Received 2 packets, got 1 answers, remaining 0 packets
+>>> r
+<IP  version=4 ihl=5 tos=0x20 len=28 id=27584 flags= frag=0 ttl=52 proto=icmp chksum=0x5b46 src=140.82.113.4 
+dst=192.168.1.188 | <ICMP  type=echo-reply code=0 chksum=0x0 id=0x0 seq=0x0 |
+<Padding  load='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00' |
+
+```
+
+---
+## Scapy
+
+```terminal
+$ sudo scapy
+>>> IP()
+<IP |>
+>>> IP() / TCP()
+<IP frag=0 proto=TCP |<TCP |>>
+>>> Ether() / IP() / TCP()
+<Ether type=0x800 |<IP frag=0 proto=TCP |<TCP |>>>
+>>> IP() / TCP() / "GET / HTTP/1.0\r\n\r\n"
+<IP frag=0 proto=TCP |<TCP |<Raw load='GET / HTTP/1.0\r\n\r\n' |>>>
+>>> Ether() / IP() / IP() / UDP()
+<Ether type=0x800 |<IP frag=0 proto=IP |<IP frag=0 proto=UDP |<UDP |>>>>
+>>> IP(proto=55) / TCP()
+<IP frag=0 proto=55 |<TCP |>>
+>>> raw(IP())
+'E\x00\x00\x14\x00\x01\x00\x00@\x00|\xe7\x7f\x00\x00\x01\x7f\x00\x00\x01'
+>>> IP(_)
+<IP version=4L ihl=5L tos=0x0 len=20 id=1 flags= frag=0L ttl=64 proto=IP
+ chksum=0x7ce7 src=127.0.0.1 dst=127.0.0.1 |>
+>>> a = Ether()/IP(dst="www.yahoo.com")/TCP()/"GET /index.html HTTP/1.0 \n\n"
+```
+
+---
+## Argparse
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--foo', nargs='*')
+parser.add_argument('--bar', nargs='*')
+parser.add_argument('baz', nargs='*')
+args = parser.parse_args()
+print(args)
+```
+
+```terminal
+$ python3 parser-ex.py --for a b
+Namespace(bar=None, baz=[], foo=["a", "b"])
+```
+
+---
+## Click
+
+```python
+import click
+
+@click.command()
+@click.option('--count', default=1, help='Number of greetings.')
+@click.option('--name', prompt='Your name', help='The person to greet.')
+def ex_1(count, name):
+  for x in range(count):
+    click.echo(f"Hello {name}!")
+
+if __name__ == '__main__':
+  ex_1()
+```
+
+```terminal
+$ python3 ex_1.py --help
+Usage: ex_1.py [OPTIONS]
+
+Options:
+  --count INTEGER  Number of greetings.
+  --name TEXT      The person to greet.
+  --help           Show this message and exit.
+  
+$ python3 hello.py --count 2
+Your name: Kevin
+Hello Kevin!
+Hello Kevin!
+```
+
+---
+## Click
+
+```python
+import click
+
+@click.command()
+@click.argument('filename', type=click.Path(exists=True))
+def touch(filename):
+  """Print FILENAME if the file exists."""
+  click.echo(click.format_filename(filename))
+
+if __name__ == '__main__':
+  touch()
+```
+
+```terminal
+$ python3 touch.py hello.txt
+hello.txt
+
+$ python3 touch.py missing.txt
+Usage: touch [OPTIONS] FILENAME
+Try 'touch --help' for help.
+
+Error: Invalid value for 'FILENAME': Path 'missing.txt' does not exist.
+```
+
+---
+
+## Course Wrap Up
+
+* Please complete the survey!
+
+---
+
+class: center, middle
+
+#End Day 04
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      // API reference: https://github.com/gnab/remark/wiki/Configuration
+      var slideshow = remark.create({
+        ratio: '16:9',
+        highlightLines: true,
+        highlightSpans: true,
+      });
+    </script>
+  </body>
+
+</html>

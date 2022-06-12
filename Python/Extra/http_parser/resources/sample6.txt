@@ -1,0 +1,4 @@
+HEAD / HTTP/1.1
+Host: cnodp.com
+User-Agent: curl/7.72.0
+Accept: */*

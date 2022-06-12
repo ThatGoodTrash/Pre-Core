@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif);
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      body {
+        font-family: monospace;
+        line-height: 1.2;
+        font-family: 'Droid Serif';
+      }
+      h1, h2, h3 {
+        font-family: monospace;
+        font-weight: normal;
+        color: #4E99C0;
+      }
+      /*Spacing between items in lists*/
+      li {
+        margin-bottom: 1em;
+      }
+
+      li:last-child {
+        margin-bottom: 0px;
+      }
+
+      code {
+        background: #e7e8e2;
+        color: #232729;
+        border-radius: 5px;
+      }
+      .code {
+        color: #232729;
+        background: #e7e8e2;
+        border-radius: 5px;
+      }
+      .red { color: #f25252; font-weight: bold; }
+      .large { font-size: 2em; }
+      .remark-slide-content h1 { font-size: 3em; }
+      .remark-slide-content h2 { font-size: 2em; }
+      .remark-slide-content h3 { font-size: 1.6em; }
+      .make-important {
+        color: #f25252;
+        font-weight: bold;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 1em;
+        color: #9e9c9b;
+        font-size: .8em;
+      }
+      /* Two-column layout */
+      .left-column {
+        width: 49%;
+        float: left;
+      }
+      .right-column {
+        width: 50%;
+        float: right;
+        clear: right;
+      }
+      .pull-left {
+        float: left;
+        width: 47%;
+      }
+      .pull-right {
+        float: right;
+        width: 47%;
+      }
+      .pull-right ~ p {
+        clear: both;
+      }
+      .left-column-wide {
+        width: 66%;
+        float: left;
+      }
+      .right-column-small {
+        width: 33%;
+        float: right;
+        clear: right;
+      }
+      .left-column-small {
+        width: 33%;
+        float: left;
+      }
+      .right-column-wide {
+        width: 66%;
+        float: right;
+        clear: right;
+      }
+      .l-c-1 {
+        width: 10%;
+        float: left;
+      }
+      .r-c-9 {
+        width: 90%;
+        float: right;
+        clear: right;
+      }
+      .clearfix {
+        overflow: auto;
+      }
+      /* API reference: https://github.com/gnab/remark/blob/master/src/remark.less */
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code-line-highlighted     { background-color: #b4b4b4; }
+
+      .remark-slide-content {
+        background-color: #232729;
+        color: #eee;
+      }
+
+      .gap-10 {
+        width: 100%;
+        height: 10px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+name: start
+class: center, middle
+
+# Day 03
+---
+
+class: center
+name: schedule
+# Schedule
+
+.left[
+HackerRank (0800 - 0830)  
+Slides (0830 - 1000)
+ - Linting, Typing
+ - Mypy, Testing
+
+Exercise (~1000 - 1200)  
+Lunch / Review (1200 - 1230)  
+Slides (1230 - 1400)
+ - Logging, JSON
+ - Bytes/Bytearrays
+ - Structs
+
+Exercise (1400 - 1600)  
+Review (1600 - 1630)
+]
+---
+# Coding Standards
+
+* At work, they can be really bad. Especially if you don't work in a development shop.
+
+* Something you write could live 10+ years.
+
+* You could make an interns life 5 years from now less painful, even for yourself when you come back to the code to add a new feature 3, 6, or 9 months after you delivered it.
+--
+
+* Generally, there are 4 simple things you can do to make things easier
+--
+
+  * Use a linter
+  * Advocate for Python 3.6+ and use Types
+  * Force type checking for your code with Mypy
+  * Write realistic and .make-important[easy] tests*
+
+.footnote[*Having to manually setup a full env to run each test is a non-starter]
+--
+
+All this isn't always possible, but try.
+
+???
+
+Talk about story of adding in a feature to framework that everyone was avoiding, ended up being under 10 lines
+
+---
+# Linting
+
+* Warn you when code doesn't comply to a specified format
+* Many linters: flake8, pep8, pylint, pyflakes, etc...
+  * We'll use flake8 / Mypy for this class
+
+--
+
+What's wrong with this code?
+
+```python
+def main():
+   a = 1
+   b = 2
+   print(a)
+   print(c)
+def add(one, two):
+     return one + two
+def addd(one: int, two: int) -> int:
+    """Adds two integers and returns the result"""
+    return	one + two
+add(1, 2)
+add("one", "two")
+addd(1, 2)
+if __name__ == "__main__":
+    main()
+```
+
+---
+# Linting
+
+
+```terminal
+$ flake8 linting.py 
+linting.py:2:4: E111 indentation is not a multiple of 4
+linting.py:3:4: F841 local variable 'b' is assigned to but never used
+linting.py:3:4: E111 indentation is not a multiple of 4
+linting.py:4:4: E111 indentation is not a multiple of 4
+linting.py:5:4: E111 indentation is not a multiple of 4
+linting.py:5:10: F821 undefined name 'c'
+linting.py:6:1: E302 expected 2 blank lines, found 0
+linting.py:7:6: E111 indentation is not a multiple of 4
+linting.py:7:6: E117 over-indented
+linting.py:8:1: E302 expected 2 blank lines, found 0
+linting.py:10:11: E273 tab after keyword
+linting.py:11:1: E305 expected 2 blank lines after class or function definition, found 0
+```
+
+---
+
+# Quick Exercise
+
+Take the sample from previous slide
+
+Get rid of all the errors
+
+---
+# Typing
+
+The authors of Python have indicated that Python will remain a dynamically typed language, and will never force type hints.
+* However, PEP 484 introduced Type Hints, making "Large Python" not a death defying experience
+
+* Types in Python are always optional. With or without them, your code will run.
+
+* Sometimes it _may_ be too cumbersome to Type everything (just don't be lazy)
+
+* However, Types enable rich documentation and autocomplete using any IDE.
+
+---
+# Typing Overview
+
+.left-column[
+```python
+import typing
+# For simple types, just use the name of the type
+x: int = 1
+x: float = 1.0
+x: bool = True
+x: str = "test"
+x: bytes = b"test"
+
+# (Python 3.9+)
+x: list[int] = [1]
+x: set[int] = {6, 7}
+
+# In Python 3.8 and earlier
+x: List[int] = [1]
+x: Set[int] = {6, 7}
+x: Dict[str, float] = {'field': 2.0}
+```
+]
+.right-column[
+Types:
+ * int, str, list, set, dict, bytes, etc...
+ * List, Set, Dict, Tuple, Optional
+ * Callable, Iterator, Union, Optional
+ * Mapping, MutableMapping, Sequence, Iterable
+]
+
+???
+
+Python has support for optional "type hints".
+
+These "type hints" are a special syntax that allow declaring the type of a variable.
+
+By declaring types for your variables, editors and tools can give you better support.
+
+---
+# Typing
+
+* Open up a new python file is your VSCode (Ensure Python/Pylance are installed)
+* Write up the following two functions
+
+```python
+def add(one, two):
+    return one + two
+
+
+def addd(one: int, two: int) -> int:
+    """Adds two integers and returns the result"""
+    return one + two
+```
+
+--
+
+* Now, try to use both functions.
+
+  * Note how VSCode is able to add additional context
+
+--
+
+* Try using _addd_ like `addd("one", 2)` 
+
+---
+
+# Example - No Types
+
+.center[![type_example_1](resources/types-ex-01.png)]
+
+---
+
+# Example - Basic Types
+
+.center[![type_example_2](resources/types-ex-02.png)]
+
+---
+
+# Example - Basic Types
+
+.center[![type_example_3](resources/types-ex-03.png)]
+
+---
+
+# Example - With Mypy
+
+.center[![type_example_4](resources/types-ex-04.png)]
+
+---
+
+# Example - Nested Types
+
+.center[![type_example_5](resources/types-ex-05.png)]
+
+---
+
+# Example - Classes
+
+.center[![type_example_6](resources/types-ex-06.png)]
+
+---
+# Mypy
+
+Mypy is by far the most popular Python static type checker. Three important things about it:
+1. Is optional.
+  * Doesn't spew errors on code you haven't added types for
+2. Does not catch runtime errors.
+  * Raise warnings before running. Doesn't enforce during execution.
+3. Does not speed up the program.
+  * Research is ongoing to speed up Python with known types ahead of time. During execution, they are ignored.
+
+--
+
+Other notable type checkers
+ * Pyright (microsoft) -- built in to pylance
+ * Pyre (Facebook)
+ * Pytype (Google)
+ * [Type hint cheatsheet](https://mypy.readthedocs.io/en/latest/cheat_sheet_py3.html)
+
+???
+
+Typing is so important, that these companies paid full time developers (within the company) to implement typing capabilities in Python
+
+---
+# Mypy
+
+Lets look at Mypy from out example before
+```python
+def add(one, two):
+    return one + two
+
+
+def addd(one: int, two: int) -> int:
+    """Adds two integers and returns the result"""
+    return one + two
+
+
+add(1, 2)
+add("one", "two")
+addd(1, 2)
+addd("one", "two")
+```
+--
+
+```terminal
+$ mypy linting.py 
+linting.py:13: error: Argument 1 to "addd" has incompatible type "str"; expected "int"
+linting.py:13: error: Argument 2 to "addd" has incompatible type "str"; expected "int"
+Found 2 errors in 1 file (checked 1 source file)
+```
+
+---
+# Mypy
+
+But I write perfect code!
+--
+
+* You don't  
+
+--
+
+But this is just for me!
+--
+
+* What if your code / thing / widget / framework is successful?
+
+--
+
+* You think you're really going to go back and re-write/annotate/comment 100's/1000's of lines of code?
+
+--
+
+Sometimes it is alright to ignore all this, but think hard about it.
+
+---
+# Exceptions
+
+Some languages, errors are specified through return values (Golang, C).  
+Other languages, think Java/Python, issues are raised through the use of exceptions. 
+
+--
+
+  * When dealing with the real world (Files, Networks, OS, etc...), you must be aware of errors
+  * Programming defensively means your program shouldn't blow up if an error occurs
+  * Failing to recover or save state to resume later can cause serious damage
+
+In Python, the syntax is:
+```python
+try: 
+  code
+except ExceptionType as variable:
+  code
+```
+
+---
+# Exceptions
+.left-column-wide[
+```terminal
+def throw_stuff():
+  selection = input("0, 1, or 2? ")
+  exceptions = [ValueError, RuntimeError, ReferenceError]
+  raise exceptions[int(selection)]("Message here...")
+
+def catch_stuff():
+  try:
+    throw_stuff()
+  except ValueError as e:
+    print("There was a value error {}".format(e))
+  except RuntimeError as e:
+    print("Runtime error this time {}".format(e))
+  except ReferenceError as e:
+    print("Reference error now fool! {}".format(e))
+  except Exception as e:
+    print("Some other exception dude {}".format(e))
+  except BaseException as e:
+    print("Oooh!  We fell all the way back {}".format(e))
+  print("Still did this...")
+
+```
+]
+.right-column-small[
+- Let's consider raising exceptions...
+- We'll define two functions:
+1. throw_stuff raises exceptions:
+    - Based on user input...
+    - What if user input is not in the expected format
+2. catch_stuff calls throw_stuff:
+    - The programmer wanted to handle throw_stuff's exceptions
+    - Programmer caught all exceptions...
+]
+
+---
+
+# Custom Exceptions
+
+.left-column-wide[
+```python
+class MyException(Exception):
+  pass
+
+class NumberNotInRangeError(Exception):
+  """Exception raised for errors in the input number.
+
+  Attributes:
+    number -- input number which caused the error
+    message -- explanation of the error
+  """
+
+  def __init__(self, number, message="Number is not in (100, 200) range"):
+      self.number = number
+      self.message = message
+      super().__init__(self.message)
+
+>>> raise MyException("No Comment")
+...
+__main__.MyException: No Comment
+>>> raise NumberNotInRangeError(1000)
+...
+__main__.NumberNotInRangeError: Number is not in (100, 200) range
+
+```
+]
+.right-column-small[
+ * To create a custom exception, just inherit from Exception
+]
+---
+# Testing
+
+For this class we'll be using the pytest module.  
+Lot of different modules exist. Doesn't really matter what you use.  
+
+--
+
+It is good practice to write independent test programs first (Test Driven Development - TDD)
+  * This never really happens
+  * It can happen if you have a clearly defined end goal (aka payment API/tasking API/etc...)
+
+--
+
+Useful to:  
+* Ensure that new code doesn't break existing code (regressions).  
+* Quickly triage what broke.
+* Code matches expected functionality.
+* Unit Testing/Functional Testing/Integration testing
+
+---
+
+# Pytest - Unit Test
+
+* Note: If a file isn't specified, pytest looks for all files/dirs that start with _test_ and functions inside those files that start with _test_
+
+```python
+# test_capitalize.py
+
+def capital_case(x):
+    return x.capitalize()
+
+def test_capital_case():
+    assert capital_case('semaphore') == 'Semaphore'
+```
+
+```terminal
+$ pytest test_capitalize.py
+test_capitalize.py .         [100%]
+==== 1 passed in 0.02s ====
+
+#Searches the directory for python files starting with _test_
+$ pytest . 
+
+#Searches a folder for python files starting with _test_
+$ pytest folder/ 
+```
+
+---
+
+# Pytest - Unit Test
+
+```python
+# test_capitalize.py
+
+def capital_case(x):
+    return x.capitalize()
+
+def test_capital_case():
+    assert capital_case('semaphore') == 'semaphore'
+```
+
+```terminal
+$ pytest test_capitalize.py                                                                                       
+test_caps.py F                                                                                       [100%]
+
+=== FAILURES ===
+___ test_capital_case ___
+    def test_capital_case():
+>       assert capital_case('semaphore') == 'semaphore'
+E       AssertionError: assert 'Semaphore' == 'semaphore'
+E         - semaphore
+E         ? ^
+E         + Semaphore
+E         ? ^
+test_caps.py:5: AssertionError
+=== short test summary info ===
+FAILED test_caps.py::test_capital_case - AssertionError: assert 'Semaphore' == 'semaphore'
+```
+
+---
+## Short Exercise & Review
+
+Take a look at _wallet.py_ and implement additional tests in _test_wallet.py_  
+ * There is an issue in _wallet.py_ 
+ 
+   * Can you have negative money? (No IOUs here!)
+ * Located in Day3 folder  
+ * Feel free to use a linter / types where you think they fit
+
+---
+# Exercise
+
+The exercise for this section is .make-important[standards].
+
+---
+
+# Lunch / Review
+
+---
+
+# Logging
+
+Python includes the .make-important[logging] package in the stdlib to make your life easy. It is common and you will see it during your experience.
+
+* Simplest usage:
+
+.left-column[
+```terminal
+>>> import logging
+>>> logging.warning('Watch out!')
+WARNING:root:Watch out!
+
+>>> logging.info('I told you so')
+
+>>> 
+```
+]
+.right-column[
+* Default config prints warnings and higher
+* Default logging levels:
+
+  * debug
+  * info
+  * warning
+  * error
+]
+
+---
+
+# Logging vs Print Debugging
+
+* Can specify an output format that is invisible down to road
+* You can pass around the logger object
+ * Do your config in the beginning and functionality implemented later doesn't need to worry about it
+* Your logger can specify multiple output streams
+ * Send output to the console and to a file
+* During production, set the loglevel to _INFO_ so only info, warn, and error message print
+* During development, set loglevel to _DEBUG_ so everything prints out
+ * No need to worry about commenting out debug prints. i.e. `print(x, y, z, ...)`
+
+---
+
+# Logging
+
+```terminal
+>>> logging.basicConfig(filename='example.log', level=logging.DEBUG)
+>>> logging.debug('This message should go to the log file')
+>>> logging.info('So should this')
+>>> logging.warning('And this, too')
+>>> logging.error('And non-ASCII stuff, too, like Øresund and Malmö')
+
+>>> quit()
+
+$ cat example.log
+
+DEBUG:root:This message should go to the log file
+INFO:root:So should this
+WARNING:root:And this, too
+ERROR:root:And non-ASCII stuff, too, like Øresund and Malmö
+```
+
+---
+
+# Logging
+
+```terminal
+# app.py
+import logging
+import lib
+
+def main():
+    logging.basicConfig(filename='app.log', level=logging.INFO)
+    logging.info('Started')
+    lib.do_something()
+    logging.info('Finished')
+
+if __name__ == '__main__':
+    main()
+
+# lib.py
+import logging
+
+def do_something():
+    logging.info('Doing something')
+```
+
+```terminal
+$ cat app.log
+INFO:root:Started
+INFO:root:Doing something
+INFO:root:Finished
+```
+???
+If your program consists of multiple modules, here’s an example of how you could organize logging in it:
+
+If you run app.py, you should see this in app.log:
+
+which is hopefully what you were expecting to see. You can generalize this to multiple modules, using the pattern in lib.py.
+
+---
+
+# Useful Logging
+
+```python
+import logging
+
+logger = logging.getLogger('example') # create logger
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler() # create console handler
+fh = logging.FileHandler(filename="example.log")
+ch.setLevel(logging.INFO) #Print out important messages to the console
+fh.setLevel(logging.DEBUG) #We don't want the user / operator / analyst to see all the messages
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s') # create formatter
+ 
+ch.setFormatter(formatter) # add formatter to ch
+logger.addHandler(ch) # add ch to logger
+fh.setFormatter(formatter) # add formatter to fh
+logger.addHandler(fh) # add fh to logger
+
+# code
+logger.debug('debug message')
+logger.info('info message')
+logger.warning('warn message')
+logger.error('error message')
+logger.critical('critical message')
+```
+
+---
+# Useful Logging
+
+```terminal
+$ python advanced_logging_example.py
+
+2021-05-03 15:10:26,620 - example - INFO - info message
+2021-05-03 15:10:26,695 - example - WARNING - warn message
+2021-05-03 15:10:26,697 - example - ERROR - error message
+2021-05-03 15:10:26,773 - example - CRITICAL - critical message
+
+$ cat example.log 
+
+2021-05-03 15:10:26,618 - example - DEBUG - debug message
+2021-05-03 15:10:26,620 - example - INFO - info message
+2021-05-03 15:10:26,695 - example - WARNING - warn message
+2021-05-03 15:10:26,697 - example - ERROR - error message
+2021-05-03 15:10:26,773 - example - CRITICAL - critical message
+```
+
+---
+
+# JSON Overview
+
+JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate.
+
+In Python, the _dict_ type is very close to resembling json.
+
+```javaScript
+{
+  "menu": {  
+    "id": "file",  
+    "value": "File",  
+    "popup": {  
+      "menuitem": [  
+        {"value": "New", "text": "Create a Document"},  
+        {"value": "Open", "onclick": "Open a File"},  
+        {"value": "Save", "onclick": "Save the Document"}  
+      ]  
+    }  
+  }
+}  
+```
+
+---
+
+# JSON Example
+
+```terminal
+>>> import json
+>>> json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}]) #json.dumps(obj)
+'["foo", {"bar": ["baz", null, 1.0, 2]}]'
+
+>>> print(json.dumps("\"foo\bar")) #json.dumps(obj)
+"\"foo\bar"
+
+>>> print(json.dumps('\u1234')) #json.dumps(obj)
+"\u1234"
+
+>>> print(json.dumps('\\')) #json.dumps(obj)
+"\\"
+
+>>> print(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=True)) #json.dumps(obj)
+{"a": 0, "b": 0, "c": 0}
+
+>>> from io import StringIO
+>>> io = StringIO()
+>>> json.dump(['streaming API'], io) #json.dump(obj, file)
+>>> io.getvalue() 
+'["streaming API"]'
+```
+
+---
+
+# JSON Example
+
+```terminal
+>>> import json
+>>> json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}]) #json.dumps(obj)
+'["foo", {"bar": ["baz", null, 1.0, 2]}]'
+
+>>> print(json.dumps("\"foo\bar")) #json.dumps(obj)
+"\"foo\bar"
+
+>>> print(json.dumps('\u1234')) #json.dumps(obj)
+"\u1234"
+
+>>> print(json.dumps('\\')) #json.dumps(obj)
+"\\"
+
+>>> print(json.dumps({"c": 0, "b": 0, "a": 0}, sort_keys=True)) #json.dumps(obj)
+{"a": 0, "b": 0, "c": 0}
+
+>>> from io import StringIO
+>>> io = StringIO()
+*>>> json.dump(['streaming API'], io) #json.dump(obj, file)
+*>>> io.getvalue() 
+'["streaming API"]'
+```
+
+---
+
+# JSON Example
+
+```terminal
+$ echo '{"4": 5,"6": 7,"8":9,"other":{"1":2,"cool":[1,2,3,{"howdeeparewe?":3}]}}' > test.json
+```
+---
+# JSON Example
+
+```terminal
+$ echo '{"4": 5,"6": 7,"8":9,"other":{"1":2,"cool":[1,2,3,{"howdeeparewe?":3}]}}' > test.json
+$ python3
+>>> import json
+>>> json_data = json.load(open("test.json")) 
+>>> type(json_data)
+```
+
+What type is json_data going to be?
+
+---
+# JSON Example
+```terminal
+$ echo '{"4": 5,"6": 7,"8":9,"other":{"1":2,"cool":[1,2,3,{"howdeeparewe?":3}]}}' > test.json
+$ python3
+>>> import json
+>>> json_data = json.load(open("test.json")) 
+>>> type(json_data)
+*<class 'dict'>
+>>> print(json_data)
+{'4': 5, '6': 7, '8': 9, 'other': {'1': 2, 'cool': [1, 2, 3, {'howdeeparewe?': 3}]}}
+>>> print(json.dumps(json_data, sort_keys=True, indent=4)))
+  {
+    "4": 5,
+    "6": 7,
+    "8": 9,
+    "other": {
+        "1": 2,
+        "cool": [
+            1,
+            2,
+            3,
+            {
+                "howdeeparewe?": 3
+            }
+...
+```
+
+---
+
+# Bytes & Bytearrays
+
+Python3 introduced the following sequence of 8-bit integers:
+* bytes - immutable, like a tuple
+* bytearray - mutable, like a list
+
+--
+
+```terminal
+>>> blist = [1, 2, 3, 255]
+>>> the_bytes = bytes(blist)
+>>> the_bytes
+b'\x01\x02\x03\xff'
+
+>>> the_byte_array = bytearray(blist)
+>>> the_byte_array
+bytearray(b'\x01\x02\x03\xff')
+```
+
+--
+
+You've seen it before, but how do we declare a string and how to we declare bytes using the string syntax?
+
+--
+
+```terminal
+>>> "Hello!"
+'Hello!'
+>>> b'\x61'
+b'a'
+```
+
+---
+# Bytes & Bytearrays
+
+```terminal
+>>> blist = [1, 2, 3, 255]
+>>> the_bytes = bytes(blist)
+>>> the_bytes[1] = 127
+```
+
+Does this work?
+
+--
+
+```terminal
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'bytes' object does not support item assignment
+```
+
+---
+# Bytes & Bytearrays
+
+```terminal
+>>> blist = [1, 2, 3, 255]
+>>> the_byte_array = bytearray(blist)
+>>> the_byte_array
+bytearray(b'\x01\x02\x03\xff')
+>>> the_byte_array[1] = 127
+```
+
+Does this work?
+
+--
+
+```terminal
+>>> the_byte_array
+bytearray(b'\x01\x7f\x03\xff')
+```
+
+---
+
+## Strings to Bytes and Back Again
+
+```terminal
+>>> my_str = "We need to write to a file!"
+>>> f = open("test.txt", "wb")
+>>> f.write(my_str)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: a bytes-like object is required, not 'str'
+
+Happens all the time - :(
+```
+---
+## Strings to Bytes and Back Again
+
+```terminal
+>>> my_str = "We need to write to a file!"
+>>> f = open("test.txt", "wb")
+>>> my_str.encode() #What encoding is it defaulting to?
+b'We need to write to a file!'
+
+>>> f.write(my_str.encode())
+```
+--
+
+```terminal
+# Another common issue
+>>> b'\x80abc'.decode("utf-8", "strict")  
+```
+
+--
+
+```python
+Traceback (most recent call last):
+    ...
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 0:
+  invalid start byte
+```
+
+--
+
+```terminal
+>>> b'\x80abc'.decode("utf-8", "replace")
+'\ufffdabc'
+>>> b'\x80abc'.decode("utf-8", "backslashreplace")
+'\\x80abc'
+>>> b'\x80abc'.decode("utf-8", "ignore")
+'abc'
+```
+
+???
+
+Python defaults to UTF-8
+
+UTF-8 has several convenient properties:
+
+It can handle any Unicode code point.
+
+A Unicode string is turned into a sequence of bytes that contains embedded zero bytes only where they represent the null character (U+0000). This means that UTF-8 strings can be processed by C functions such as strcpy() and sent through protocols that can’t handle zero bytes for anything other than end-of-string markers.
+
+A string of ASCII text is also valid UTF-8 text.
+
+UTF-8 is fairly compact; the majority of commonly used characters can be represented with one or two bytes.
+
+If bytes are corrupted or lost, it’s possible to determine the start of the next UTF-8-encoded code point and resynchronize. It’s also unlikely that random 8-bit data will look like valid UTF-8.
+
+UTF-8 is a byte oriented encoding. The encoding specifies that each character is represented by a specific sequence of one or more bytes. This avoids the byte-ordering issues that can occur with integer and word oriented encodings, like UTF-16 and UTF-32, where the sequence of bytes varies depending on the hardware on which the string was encoded.
+
+---
+
+# Dealing with Odd Data
+
+Take a second and post an answer the following in the chat:  
+
+--
+
+* What is 0xdeadbeef as an unsigned integer?
+
+--
+
+* What is 0xdeadbeef as a little endian unsigned integer?
+
+--
+
+* b"0441424344"
+  * What could this be?
+
+--
+
+???
+1 - 3735928559
+2 - 0xefbeadde struct.pack("<I", 0xdeadbeef) | 4022250974  >
+3 - length then characters, (4, b'A', b'B', b'C', b'D')
+
+---
+
+# Structs
+
+Python has multiple tools for dealing with data. Up until now, tools for binary data were few and far between.  The Python library provides the .make-important[struct] standard library to convert binary data to Python data structures.
+
+The two important methods:
+* struct.pack - converting python data to binary
+* struct.unpack - converting binary data to Python
+
+---
+
+# Struct in Practice
+
+```python
+>>> import struct
+
+>>> big_int = struct.pack('>I', 2015) # Convert 2015 to Big Endian Integer
+>>> big_int
+b'\x00\x00\x07\xdf'
+
+>>> little_int = struct.pack('<I', 2015) # Convert 2015 to Big Endian Integer
+>>> little_int
+b'\xdf\x07\x00\x00'
+
+>>> struct.unpack(">I", big_int)
+(2015,)
+
+>>> struct.unpack("<I", big_int)
+(3741777920,)
+
+```
+???
+>
+
+---
+
+# What is an Endianness?
+
+* Endianness is the order or sequence of bytes of a word of digital data in computer memory.
+* It is primarily expressed as:
+
+  * big-endian (BE)
+  * little-endian (LE)
+* You can find different endianness for ARM, MIPS
+* x86/64 is always little endian
+
+---
+
+# What is an Endianness?
+
+Big-endian - stores the most significant byte in the smallest memory address. Ex: `0xffeeddcc` at `0x1000`.  
+```terminal
+0x1000 - 0xff  
+0x1001 - 0xee  
+0x1002 - 0xdd  
+0x1003 - 0xcc  
+4 byte view  
+0x1000 - 0xffeeddcc  
+```
+
+--
+  
+   
+Little-endian - stores the most significant byte in the highest memory address. Ex: `0xffeeddcc` at `0x1000`.  
+```terminal
+0x1000 - 0xcc  
+0x1001 - 0xdd  
+0x1002 - 0xee  
+0x1003 - 0xff  
+4 byte view  
+0x1000 - 0xccddeeff  
+```
+---
+
+# Struct in Practice Pt 2
+
+```python
+>>> import struct
+
+>>> big_int = struct.pack('>I', 2015) # Convert 2015 to Big Endian Integer
+>>> big_int
+b'\x00\x00\x07\xdf'
+
+>>> little_int = struct.pack('<I', 2015) # Convert 2015 to Big Endian Integer
+>>> little_int
+b'\xdf\x07\x00\x00'
+
+>>> struct.unpack(">I", big_int)
+(2015,)
+
+>>> struct.unpack("<I", big_int)
+(3741777920,)
+```
+???
+>
+
+---
+
+# Struct Modifiers
+
+
+.left-column[
+Endian Specifies
+* .make-important[<] Little Endian
+* .make-important[>] Big Endian
+* .make-important[@] Native -- assumed if none specified
+* .make-important[=] Native
+* .make-important[!] Network (big endian)
+]
+.right-column[
+Format Specifiers (# of bytes)
+* .make-important[x] - pad/skip byte (1)
+* .make-important[b] - signed char (1)
+* .make-important[B] - unsigned char (1)
+* .make-important[H] - Unsigned short (2)
+* .make-important[I] - Unsigned int (4)
+* .make-important[L] - Unsigned long (4)
+* .make-important[Q] - Unsigned long long (8)
+* .make-important[s] - char[] (byte)  
+  * For the 's' format character, the count is interpreted as the length of the bytes, not a repeat count like other; for example, '10s' means a single 10-byte string
+
+]
+
+
+---
+
+# Struct in Practice Pt2
+
+```terminal
+>>> import struct
+>>> valid_png_header = b'\x89PNG\r\n\x1a\n'
+>>> data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR' + \
+...     b'\x00\x00\x00\x9a\x00\x00\x00\x8d\x08\x02\x00\x00\x00\xc0'
+>>> if data[:8] == valid_png_header:
+...     width, height = struct.unpack('>LL', data[16:24])
+...     print('Valid PNG, width', width, 'height', height)
+... else:
+...     print('Not a valid PNG')
+...
+Valid PNG, width 154 height 141
+```
+
+---
+
+# Struct in Practice Pt2
+
+```terminal
+>>> import struct
+>>> valid_png_header = b'\x89PNG\r\n\x1a\n'
+>>> data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR' + \
+...     b'\x00\x00\x00\x9a\x00\x00\x00\x8d\x08\x02\x00\x00\x00\xc0'
+>>> if data[:8] == valid_png_header:
+*...     width, height = struct.unpack('>2L', data[16:24])
+...     print('Valid PNG, width', width, 'height', height)
+... else:
+...     print('Not a valid PNG')
+...
+Valid PNG, width 154 height 141
+```
+
+???
+
+The type specifiers follow the endian character. Any specifier may be preceded by a number that indicates the count; 5B is the same as BBBBB.
+
+You can use a count prefix instead of >LL:
+
+---
+
+# Struct in Practice Pt2
+
+```terminal
+>>> import struct
+>>> valid_png_header = b'\x89PNG\r\n\x1a\n'
+>>> data = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR' + \
+...     b'\x00\x00\x00\x9a\x00\x00\x00\x8d\x08\x02\x00\x00\x00\xc0'
+>>> if data[:8] == valid_png_header:
+*...     width, height = struct.unpack('>16x2L6x', data)
+...     print('Valid PNG, width', width, 'height', height)
+... else:
+...     print('Not a valid PNG')
+...
+Valid PNG, width 154 height 141
+```
+
+???
+Use big-endian integer format (>)
+
+Skip 16 bytes (16x)
+
+Read eight bytes—two unsigned long integers (2L)
+
+Skip the final six bytes (6x)
+
+---
+
+# Structs in Practice Pt 2
+
+```python
+>>> from struct import pack, unpack
+>>> record = b'raymond   \x32\x12\x08\x01\x08'
+>>> name, serialnum, school, gradelevel = unpack('<10sHHb', record)
+
+>>> from collections import namedtuple
+>>> Student = namedtuple('Student', 'name serialnum school gradelevel')
+>>> Student._make(unpack('<10sHHb', record))
+Student(name=b'raymond   ', serialnum=4658, school=264, gradelevel=8)
+```
+
+--
+
+```python
+>>> import struct, binascii
+
+>>> values = (1, b'ab', 2.7)
+>>> s = struct.Struct('I 2s f')
+>>> packed_data = s.pack(*values)
+
+>>> print('Original values:', values)                          #Original values    : (1, b'ab', 2.7)
+>>> print('Format string  :', s.format)                        #Format string      : I 2s f
+>>> print('Uses           :', s.size, 'bytes')                 #Uses               : 12 bytes
+>>> print(b'Packed Value   :', packed_data)                    #Packed Value       : \x01\x00\x00\x00ab\x00...
+>>> print(b'Packed As Hex   :', binascii.hexlify(packed_data)) #Packed As Hex      : 0100000061620000cdcc2c40
+```
+
+???
+>
+---
+
+# Why Would You Use This?
+
+* Sending data over a network
+  * You can use a standardized format that is interoperable
+  * Other language can interpret the byte sequences
+  * No room for interpreting data
+
+* File formats
+  * Be explicit with how data is stored on disk
+  * Again, leave no room for error.
+
+* Reading/Writing in a binary format is typically easier in code for computers
+  * No string parsing!
+
+---
+
+# Exercise
+
+The exercise for this section is the .make-important[data-parse].
+
+---
+
+# Review
+
+---
+
+class: center, middle
+
+#End Day 03
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      // API reference: https://github.com/gnab/remark/wiki/Configuration
+      var slideshow = remark.create({
+        ratio: '16:9',
+        highlightLines: true,
+        highlightSpans: true,
+      });
+    </script>
+  </body>
+</html>
